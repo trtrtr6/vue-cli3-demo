@@ -40,7 +40,8 @@ export default async (url = '', data = {}, type = 'GET') => {
   }
   try {
     const response = await fetch(url, requestConfig)
-    if (response.status === 500) {
+    const contentType = response.headers.get('Content-Type')
+    if (contentType !== 'application/octet-stream') {
       const responseJson = await response.json()
       return responseJson
     }
