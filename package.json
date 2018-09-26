@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "element-ui": "^2.4.6",
+    "time-formater": "^1.0.1",
     "vue": "^2.5.17",
+    "vue-lodash": "^2.0.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
