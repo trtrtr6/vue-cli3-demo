@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+    <mu-card style="width: 100%;">
       <mu-card-title title="Content Title" sub-title="Content Title"></mu-card-title>
       <mu-card-text>
         散落在指尖的阳光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影。

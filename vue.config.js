@@ -1,10 +1,17 @@
+const path = require('path')
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
 module.exports = {
   lintOnSave: false,
   baseUrl: undefined,
-  outputDir: 'manage',
-  assetsDir: undefined,
+  outputDir: undefined,
+  assetsDir: 'static',
   runtimeCompiler: undefined,
-  productionSourceMap: undefined,
+  productionSourceMap: false,
   parallel: undefined,
-  css: undefined
+  css: undefined,
+  chainWebpack: (config) => {
+    config.resolve.alias.set('@', resolve('src'))
+  }
 }
