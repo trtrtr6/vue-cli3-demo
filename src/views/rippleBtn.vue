@@ -32,19 +32,19 @@ export default {
 </script>
 <style>
 .VueStar__decoration {
-  overflow-x: scroll;
-    width: 100px;
-    height: 100px;
-    background: url("../assets/123.png") no-repeat;
-    background-position: 0 0;
-    -webkit-transition: background-position 1s steps(25);
-    transition: background-position 1s steps(25);
-    -webkit-transition-duration: 0s;
-    transition-duration: 0s;
+  /* overflow-x: scroll; */
+  width: 100Px;
+  height: 100Px;
+  background: url("../assets/123.png") no-repeat;
+  background-position: 0 0;
+  -webkit-transition: background-position 1s steps(25);
+  transition: background-position 1s steps(25);
+  -webkit-transition-duration: 0s;
+  transition-duration: 0s;
 }
 .VueStar__decoration--active {
-    -webkit-transition-duration: 1s;
-    transition-duration: 1s;
-    background-position: -2500px 0;
+  -webkit-transition-duration: 1s;
+  transition-duration: 1s;
+  background-position: -2500Px 0;
 }
 </style>
