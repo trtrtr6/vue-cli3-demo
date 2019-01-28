@@ -20,8 +20,11 @@ console.log(process.env.NODE_ENV)
 console.log(process.env.VUE_APP_TITLE)
 console.log(process.env.VUE_APP_SECRET)
 console.log(process.env.FOO)
+console.log(process.env.VUE_APP_LOCALALL)
+console.log(process.env.VUE_APP_LOCALDEV)
 console.log(process.env.VUE_APP_ALL)
 console.log(process.env.VUE_APP_PRODUCT)
+console.log(process.env.BASE_URL)
 
 new Vue({
   router,
