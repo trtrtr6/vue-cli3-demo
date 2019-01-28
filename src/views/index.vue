@@ -15,7 +15,8 @@
 export default {
   data () {
     return {
-      pages: []
+      pages: [],
+      test: ''
     }
   },
   created () {

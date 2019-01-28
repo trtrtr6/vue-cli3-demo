@@ -6,7 +6,7 @@ import store from '../store/'
 
 Vue.use(Router)
 
-const Home = () => import(/* webpackChunkName: "Home" */ '@/views/home.vue')
+const Index = () => import(/* webpackChunkName: "index" */ '@/views/index.vue')
 const MonacoEditor = () => import(/* webpackChunkName: "monacoEditor" */ '@/views/monacoEditor.vue')
 const RippleBtn = () => import(/* webpackChunkName: "rippleBtn" */ '@/views/rippleBtn.vue')
 const Other = () => import(/* webpackChunkName: "other" */ '@/views/other.vue')
@@ -16,7 +16,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Index
   },
   {
     path: '/monacoEditor',
