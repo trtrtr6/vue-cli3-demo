@@ -11,6 +11,9 @@ const MonacoEditor = () => import(/* webpackChunkName: "monacoEditor" */ '@/view
 const RippleBtn = () => import(/* webpackChunkName: "rippleBtn" */ '@/views/rippleBtn.vue')
 const Other = () => import(/* webpackChunkName: "other" */ '@/views/other.vue')
 const Twdb = () => import(/* webpackChunkName: "twdb" */ '@/views/twdb.vue')
+const Transition = () => import(/* webpackChunkName: "transition" */ '@/views/transition.vue')
+const Flip = () => import(/* webpackChunkName: "flip" */ '@/views/flip.vue')
+const Flip2 = () => import(/* webpackChunkName: "flip2" */ '@/views/flip2.vue')
 
 const routes = [
   {
@@ -35,6 +38,21 @@ const routes = [
     path: '/twdb',
     name: '数据双向绑定的多种情况及实现',
     component: Twdb
+  },
+  {
+    path: '/transition',
+    name: '动画过渡',
+    component: Transition
+  },
+  {
+    path: '/flip',
+    name: 'flip动画实例（使用第三方库flipping未成功，暂时放弃）',
+    component: Flip
+  },
+  {
+    path: '/flip2',
+    name: 'flip动画实例（原生的 Web Animations API 实现）',
+    component: Flip2
   },
   {
     path: '/other',
