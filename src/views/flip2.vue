@@ -2,18 +2,12 @@
   <div class="container">
     <div class="app">
       <div class="scene -gallery">
-        <div class="item" data-key="owl">
-          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-owl.png" alt="" />
-        </div>
-        <div class="item" data-key="deer">
-          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-deer.png" alt="" />
-        </div>
-        <div class="item" data-key="hipster">
-          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-hipster.png" alt="" />
+        <div class="item" :data-key="item.dataKey" v-for="(item, index) in items" :key="index" @click="detail($event)">
+          <img :src="item.src" alt="" />
         </div>
     </div>
-      <div class="scene -detail">
-        <div class="detail">
+      <div class="scene -detail" style="display:none;">
+        <div class="detail"  @click="item($event)">
           <img />
           <div class="content">
             <div class="title">Great Horned Owl</div>
@@ -29,85 +23,165 @@
 export default {
   data () {
     return {
-
+      items: [
+        {
+          dataKey: 'owl',
+          src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-owl.png'
+        },
+        {
+          dataKey: 'deer',
+          src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-deer.png'
+        },
+        {
+          dataKey: 'hipster',
+          src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-hipster.png'
+        }
+      ]
     }
   },
   mounted () {
-    this.init()
+    // this.init()
   },
   methods: {
-    init () {
-      const items = document.querySelectorAll('.item')
+    detail (e) {
       const detailItem = document.querySelector('.detail')
       const detailScene = document.querySelector('.scene.-detail')
 
-      detailScene.style.display = 'none'
+      const item = e.target.parentNode
+      const itemImage = item.querySelector('img')
 
-      items.forEach((item) => {
-        item.addEventListener('click', () => {
-          const itemImage = item.querySelector('img')
+      detailItem.setAttribute('data-image', item.getAttribute('data-key'))
 
-          detailItem.setAttribute('data-image', item.getAttribute('data-key'))
+      detailItem.querySelector('img').setAttribute('src', itemImage.getAttribute('src'))
 
-          detailItem.querySelector('img').setAttribute('src', itemImage.getAttribute('src'))
+      detailScene.style.display = 'block'
+      item.style.opacity = 0
 
-          detailScene.style.display = 'block'
-          item.style.opacity = 0
+      let firstRect = itemImage.getBoundingClientRect()
+      let lastRect = detailItem.getBoundingClientRect()
 
-          let firstRect = itemImage.getBoundingClientRect()
-          let lastRect = detailItem.getBoundingClientRect()
+      console.log('firstRect', firstRect)
+      console.log('lastRect', lastRect)
+      console.log('translateX', (firstRect.left - lastRect.left))
+      console.log('translateY', (firstRect.top - lastRect.top))
+      console.log('scale', (firstRect.width / lastRect.width))
 
-          console.log('firstRect', firstRect)
-          console.log('lastRect', lastRect)
-          console.log('translateX', (firstRect.left - lastRect.left))
-          console.log('translateY', (firstRect.top - lastRect.top))
-          console.log('scale', (firstRect.width / lastRect.width))
-
-          detailItem.animate([
-            {
-              transform: `
+      detailItem.animate([
+        {
+          transform: `
                 translateX(${firstRect.left - lastRect.left}px)
                 translateY(${firstRect.top - lastRect.top}px)
                 scale(${firstRect.width / lastRect.width})
               `
-            },
-            {
-              transform: 'none'
-            }
-          ], {
-            duration: 600,
-            easing: 'cubic-bezier(0.2, 0, 0.2, 1)'
-          })
-        })
+        },
+        {
+          transform: 'none'
+        }
+      ], {
+        duration: 600,
+        easing: 'cubic-bezier(0.2, 0, 0.2, 1)'
       })
+    },
+    item (e) {
+      const detailItem = document.querySelector('.detail')
+      const detailScene = document.querySelector('.scene.-detail')
+      const itemImage = document.querySelector(`[data-key="${detailItem.getAttribute('data-image')}"]`)
+      let itemImageRect = itemImage.getBoundingClientRect()
+      let detailItemRect = detailItem.getBoundingClientRect()
 
-      detailItem.addEventListener('click', () => {
-        const itemImage = document.querySelector(`[data-key="${detailItem.getAttribute('data-image')}"]`)
-        let itemImageRect = itemImage.getBoundingClientRect()
-        let detailItemRect = detailItem.getBoundingClientRect()
+      detailScene.style.display = 'none'
+      itemImage.style.opacity = 1
 
-        detailScene.style.display = 'none'
-        itemImage.style.opacity = 1
-
-        itemImage.animate([
-          {
-            zIndex: 2,
-            transform: `
+      itemImage.animate([
+        {
+          zIndex: 2,
+          transform: `
               translateX(${detailItemRect.left - itemImageRect.left}px)
               translateY(${detailItemRect.top - itemImageRect.top}px)
               scale(${detailItemRect.width / itemImageRect.width})
             `
-          },
-          {
-            zIndex: 2,
-            transform: 'none'
-          }
-        ], {
-          duration: 600,
-          easing: 'cubic-bezier(0.2, 0, 0.2, 1)'
-        })
+        },
+        {
+          zIndex: 2,
+          transform: 'none'
+        }
+      ], {
+        duration: 600,
+        easing: 'cubic-bezier(0.2, 0, 0.2, 1)'
       })
     }
+    // init () {
+    //   const items = document.querySelectorAll('.item')
+    //   const detailItem = document.querySelector('.detail')
+    //   const detailScene = document.querySelector('.scene.-detail')
+
+    //   detailScene.style.display = 'none'
+
+    //   items.forEach((item) => {
+    //     item.addEventListener('click', () => {
+    //       const itemImage = item.querySelector('img')
+
+    //       detailItem.setAttribute('data-image', item.getAttribute('data-key'))
+
+    //       detailItem.querySelector('img').setAttribute('src', itemImage.getAttribute('src'))
+
+    //       detailScene.style.display = 'block'
+    //       item.style.opacity = 0
+
+    //       let firstRect = itemImage.getBoundingClientRect()
+    //       let lastRect = detailItem.getBoundingClientRect()
+
+    //       console.log('firstRect', firstRect)
+    //       console.log('lastRect', lastRect)
+    //       console.log('translateX', (firstRect.left - lastRect.left))
+    //       console.log('translateY', (firstRect.top - lastRect.top))
+    //       console.log('scale', (firstRect.width / lastRect.width))
+
+    //       detailItem.animate([
+    //         {
+    //           transform: `
+    //             translateX(${firstRect.left - lastRect.left}px)
+    //             translateY(${firstRect.top - lastRect.top}px)
+    //             scale(${firstRect.width / lastRect.width})
+    //           `
+    //         },
+    //         {
+    //           transform: 'none'
+    //         }
+    //       ], {
+    //         duration: 600,
+    //         easing: 'cubic-bezier(0.2, 0, 0.2, 1)'
+    //       })
+    //     })
+    //   })
+
+    //   detailItem.addEventListener('click', () => {
+    //     const itemImage = document.querySelector(`[data-key="${detailItem.getAttribute('data-image')}"]`)
+    //     let itemImageRect = itemImage.getBoundingClientRect()
+    //     let detailItemRect = detailItem.getBoundingClientRect()
+
+    //     detailScene.style.display = 'none'
+    //     itemImage.style.opacity = 1
+
+    //     itemImage.animate([
+    //       {
+    //         zIndex: 2,
+    //         transform: `
+    //           translateX(${detailItemRect.left - itemImageRect.left}px)
+    //           translateY(${detailItemRect.top - itemImageRect.top}px)
+    //           scale(${detailItemRect.width / itemImageRect.width})
+    //         `
+    //       },
+    //       {
+    //         zIndex: 2,
+    //         transform: 'none'
+    //       }
+    //     ], {
+    //       duration: 600,
+    //       easing: 'cubic-bezier(0.2, 0, 0.2, 1)'
+    //     })
+    //   })
+    // }
   }
 }
 </script>

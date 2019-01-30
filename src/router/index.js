@@ -14,6 +14,7 @@ const Twdb = () => import(/* webpackChunkName: "twdb" */ '@/views/twdb.vue')
 const Transition = () => import(/* webpackChunkName: "transition" */ '@/views/transition.vue')
 const Flip = () => import(/* webpackChunkName: "flip" */ '@/views/flip.vue')
 const Flip2 = () => import(/* webpackChunkName: "flip2" */ '@/views/flip2.vue')
+const Flip3 = () => import(/* webpackChunkName: "flip3" */ '@/views/flip3.vue')
 
 const routes = [
   {
@@ -53,6 +54,11 @@ const routes = [
     path: '/flip2',
     name: 'flip动画实例（原生的 Web Animations API 实现）',
     component: Flip2
+  },
+  {
+    path: '/flip3',
+    name: 'flip动画实例（原生的 requestAnimationFrame 实现）',
+    component: Flip3
   },
   {
     path: '/other',

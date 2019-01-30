@@ -27,11 +27,11 @@ export default {
           flipKey: 'photo-1'
         },
         {
-          src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-owl.png',
+          src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-deer.png',
           flipKey: 'photo-2'
         },
         {
-          src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-owl.png',
+          src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/181794/kl-hipster.png',
           flipKey: 'photo-3'
         }
       ],

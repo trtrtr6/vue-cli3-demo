@@ -1,6 +1,6 @@
 <template>
   <div class="page-routers row center-xs">
-    <div class="col-xs-6">
+    <div class="col-xs-12">
       <ul>
         <template v-for="(item, index) in pages">
           <router-link v-if="item.name!=='home'" :key="index" tag="li" :to="item.path">
