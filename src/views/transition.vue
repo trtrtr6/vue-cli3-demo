@@ -18,6 +18,7 @@
     <div id="list-demo" class="demo">
       <button v-on:click="add">Add</button>
       <button v-on:click="remove">Remove</button>
+      <button v-on:click="shuffle">Shuffle</button>
       <transition-group name="list" tag="p">
         <span v-for="item in items" v-bind:key="item" class="list-item">
           {{ item }}
@@ -27,6 +28,7 @@
   </div>
 </template>
 <script>
+import _ from 'lodash'
 export default {
   data () {
     return {
@@ -39,6 +41,9 @@ export default {
       items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
       nextNum: 10
     }
+  },
+  mounted () {
+    console.log(_)
   },
   methods: {
     change () {
@@ -60,6 +65,9 @@ export default {
     },
     remove: function () {
       this.items.splice(this.randomIndex(), 1)
+    },
+    shuffle: function () {
+      this.items = _.shuffle(this.items)
     }
   }
 }
@@ -68,6 +76,7 @@ export default {
 button{
   padding:3px 9px;
   border-radius:6px;
+  margin:6px;
 }
 </style>
 
@@ -93,7 +102,7 @@ button{
 .list-item {
   display: inline-block;
   margin-right: 10px;
-  transition: all 1s;/*也可以使用*-move设置过渡时间来平滑过渡*/
+  transition: all 1s;/*也可以使用*-move设置过渡时间来平滑过渡，效果有点不太一样*/
 }
 .list-enter-active, .list-leave-active {
   transition: all 1s;
