@@ -9,6 +9,6 @@ module.exports = {
         'android >= 4.0'
       ]
     },
-    'postcss-px2rem': {remUnit: 37.5}
+    'postcss-px2rem': { remUnit: 37.5 }
   }
 }
