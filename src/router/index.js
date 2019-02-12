@@ -15,6 +15,7 @@ const Transition = () => import(/* webpackChunkName: "transition" */ '@/views/tr
 const Flip = () => import(/* webpackChunkName: "flip" */ '@/views/flip.vue')
 const Flip2 = () => import(/* webpackChunkName: "flip2" */ '@/views/flip2.vue')
 const Flip3 = () => import(/* webpackChunkName: "flip3" */ '@/views/flip3.vue')
+const TimeFormat = () => import(/* webpackChunkName: "timeFormat" */ '@/views/timeFormat.vue')
 
 const routes = [
   {
@@ -59,6 +60,11 @@ const routes = [
     path: '/flip3',
     name: 'flip动画实例（原生的 requestAnimationFrame 实现）',
     component: Flip3
+  },
+  {
+    path: '/timeFormat',
+    name: '时间格式化相关',
+    component: TimeFormat
   },
   {
     path: '/other',
