@@ -9,12 +9,14 @@ import 'muse-ui/dist/muse-ui.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'flexboxgrid/dist/flexboxgrid.min.css'
+import TestApi from '@/api/test'
 
 Vue.config.productionTip = false
 
 Vue.use(VueLodash)
 Vue.use(MuseUI)
 Vue.use(ElementUI)
+Vue.use(TestApi)
 
 console.log(process.env.NODE_ENV)
 console.log(process.env.VUE_APP_TITLE)
