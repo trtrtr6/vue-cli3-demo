@@ -65,6 +65,9 @@ export default {
    * @param {*} fmt
    */
   dateFormat (date, fmt) {
+    if (typeof date !== 'object') {
+      date = new Date(date)
+    }
     var o = {
       'M+': date.getMonth() + 1, // 月份
       'd+': date.getDate(), // 日
@@ -94,6 +97,9 @@ export default {
     return date
   },
   isYestday (d) {
+    if (typeof d !== 'object') {
+      d = new Date(d)
+    }
     const date = (new Date()) // 当前时间
     const today = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() // 今天凌晨
     const yestday = new Date(today - 24 * 3600 * 1000).getTime()
@@ -101,6 +107,9 @@ export default {
     return timeValue < today && yestday <= timeValue
   },
   isYear (d) {
+    if (typeof d !== 'object') {
+      d = new Date(d)
+    }
     const takeNewYear = this.dateFormat(new Date(), 'yyyy')// 当前时间的年份
     const takeTimeValue = this.dateFormat(d, 'yyyy')// 传入时间的年份
     return takeTimeValue === takeNewYear
@@ -118,15 +127,15 @@ export default {
     if (timeDiffer <= 60000) { // 一分钟内
       returnTime = '刚刚'
     } else if (timeDiffer > 60000 && timeDiffer < 3600000) { // 1小时内
-      returnTime = Math.floor(timeDiffer / 60000) + '分钟前'
-    } else if (timeDiffer >= 3600000 && timeDiffer < 86400000 && this.isYestday(new Date(timeValue)) === false) { // 今日
-      returnTime = this.dateFormat(new Date(timeValue), 'hh:mm')
-    } else if (timeDiffer > 3600000 && this.isYestday(new Date(timeValue)) === true) { // 昨天
-      returnTime = '昨天' + this.dateFormat(new Date(timeValue), 'hh:mm')
-    } else if (timeDiffer > 86400000 && this.isYestday(new Date(timeValue)) === false && this.isYear(new Date(timeValue)) === true) { // 今年
-      returnTime = this.dateFormat(new Date(timeValue), 'MM-dd hh:mm')
-    } else if (timeDiffer > 86400000 && this.isYestday(new Date(timeValue)) === false && this.isYear(new Date(timeValue)) === false) { // 不属于今年
-      returnTime = this.dateFormat(new Date(timeValue), 'yyyy-MM-dd')
+      returnTime = Math.floor(timeDiffer / 60000) + '分钟前'// 显示xx分钟前
+    } else if (timeDiffer >= 3600000 && timeDiffer < 86400000 && this.isYestday(timeValue) === false) { // 今日
+      returnTime = this.dateFormat(timeValue, 'hh:mm')// 显示时分
+    } else if (timeDiffer > 3600000 && this.isYestday(timeValue) === true) { // 昨天
+      returnTime = '昨天' + this.dateFormat(timeValue, 'hh:mm')// 显示昨天+时分
+    } else if (timeDiffer > 86400000 && this.isYestday(timeValue) === false && this.isYear(timeValue) === true) { // 今年
+      returnTime = this.dateFormat(timeValue, 'MM-dd hh:mm')// 显示月日时分
+    } else if (timeDiffer > 86400000 && this.isYestday(timeValue) === false && this.isYear(timeValue) === false) { // 不属于今年
+      returnTime = this.dateFormat(timeValue, 'yyyy-MM-dd')// 显示年月日
     }
     return returnTime
   }
