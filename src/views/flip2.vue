@@ -10,9 +10,11 @@
         <div class="detail"  @click="item($event)">
           <img />
           <div class="content">
-            <div class="title">Great Horned Owl</div>
-            <div class="creator">Krystine Lopez</div>
-            <div class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure cum, est amet delectus, blanditiis voluptatem laborum pariatur consequatur quae voluptate, nisi. Laborum adipisci iste earum distinctio, fugit, quas ipsa impedit.</div>
+            <div class="title">测试标题</div>
+            <div class="description">测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述
+              测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述
+              测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述
+            </div>
           </div>
         </div>
       </div>

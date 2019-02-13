@@ -65,9 +65,7 @@ export default {
    * @param {*} fmt
    */
   dateFormat (date, fmt) {
-    if (typeof date !== 'object') {
-      date = new Date(date)
-    }
+    date = typeof date !== 'object' ? new Date(date) : date
     var o = {
       'M+': date.getMonth() + 1, // 月份
       'd+': date.getDate(), // 日
@@ -97,9 +95,7 @@ export default {
     return date
   },
   isYestday (d) {
-    if (typeof d !== 'object') {
-      d = new Date(d)
-    }
+    d = typeof d !== 'object' ? new Date(d) : d
     const date = (new Date()) // 当前时间
     const today = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() // 今天凌晨
     const yestday = new Date(today - 24 * 3600 * 1000).getTime()
@@ -107,9 +103,7 @@ export default {
     return timeValue < today && yestday <= timeValue
   },
   isYear (d) {
-    if (typeof d !== 'object') {
-      d = new Date(d)
-    }
+    d = typeof d !== 'object' ? new Date(d) : d
     const takeNewYear = this.dateFormat(new Date(), 'yyyy')// 当前时间的年份
     const takeTimeValue = this.dateFormat(d, 'yyyy')// 传入时间的年份
     return takeTimeValue === takeNewYear
