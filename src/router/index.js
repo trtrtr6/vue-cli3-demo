@@ -16,6 +16,7 @@ const Flip = () => import(/* webpackChunkName: "flip" */ '@/views/flip.vue')
 const Flip2 = () => import(/* webpackChunkName: "flip2" */ '@/views/flip2.vue')
 const Flip3 = () => import(/* webpackChunkName: "flip3" */ '@/views/flip3.vue')
 const TimeFormat = () => import(/* webpackChunkName: "timeFormat" */ '@/views/timeFormat.vue')
+const Dialog = () => import(/* webpackChunkName: "dialog" */ '@/views/dialog.vue')
 
 const routes = [
   {
@@ -65,6 +66,11 @@ const routes = [
     path: '/timeFormat',
     name: '时间格式化相关',
     component: TimeFormat
+  },
+  {
+    path: '/dialog',
+    name: '自定义弹窗',
+    component: Dialog
   },
   {
     path: '/other',
