@@ -21,7 +21,9 @@ export default{
     },
     doOpen () {
       const dom = this.$el
+      // 打开遮罩层
       PopupManager.openModal(this._popupId, PopupManager.nextZIndex(), dom)
+      // 设置弹窗主题的z-index层级
       dom.style.zIndex = PopupManager.nextZIndex()
     },
     close () {
@@ -33,7 +35,6 @@ export default{
   },
   watch: {
     visible (val) {
-      console.log(1111)
       if (val) {
         this.open()
       } else {

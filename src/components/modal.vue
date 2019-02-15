@@ -84,8 +84,13 @@ export default {
 }
 .x-dialog-btn-close{
   position: absolute;
-  right:0;
-  top:0;
+  right:20px;
+  top:20px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
 }
 .x-modal{
   position: fixed;
