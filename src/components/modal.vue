@@ -1,15 +1,15 @@
 <template>
-  <div class="x-dialog-wrap" v-show="visible">
-    <div class="x-dialog" style="margin-top:15vh;width:30%;">
+  <div class="x-dialog-wrap" v-show="visible" @click.self="handleWrapperClick">
+    <div class="x-dialog" :style="style">
       <div class="x-dialog-header">
-        <slot name="header">头部</slot>
+        <slot name="header">默认头部</slot>
         <button class="x-dialog-btn-close" @click="handleClose">关闭</button>
       </div>
       <div class="x-dialog-body">
-        <slot>body</slot>
+        <slot>默认body</slot>
       </div>
       <div class="x-dialog-footer">
-        <slot name="footer">尾部</slot>
+        <slot name="footer">默认尾部</slot>
       </div>
     </div>
   </div>
@@ -18,7 +18,14 @@
 import popup from '@/mixins/popup'
 export default {
   props: {
-
+    width: {
+      type: String,
+      default: '50%'
+    },
+    top: {
+      type: String,
+      default: '15vh'
+    }
   },
   mixins: [popup],
   data () {
@@ -26,7 +33,19 @@ export default {
 
     }
   },
+  computed: {
+    style () {
+      const { width, top } = this
+      return {
+        width,
+        top
+      }
+    }
+  },
   methods: {
+    handleWrapperClick () {
+      this.handleClose()
+    },
     handleClose () {
       this.hide()
     },
@@ -52,7 +71,16 @@ export default {
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
-  width: 50%;
+}
+.x-dialog-header{
+  position:relative;
+  padding: 20px 20px 10px 20px;
+}
+.x-dialog-body{
+  padding:20px;
+}
+.x-dialog-footer{
+  padding:10px 20px 20px 20px;
 }
 .x-dialog-btn-close{
   position: absolute;

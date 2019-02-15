@@ -2,11 +2,15 @@ import { addClass } from '@/utils/dom'
 const instances = {}
 const PopupManager = {
   modalDom: undefined,
+  modalStack: [],
   zIndex: 2019,
   getModal: function () {
     if (!PopupManager.modalDom) {
       PopupManager.modalDom = document.createElement('div')
     }
+    // PopupManager.modalDom.addEventListener('click', () => {
+    //   PopupManager.doOnModalClick && PopupManager.doOnModalClick()
+    // })
     return PopupManager.modalDom
   },
   getInstance: function (id) {
@@ -31,12 +35,26 @@ const PopupManager = {
     addClass(modalDom, 'x-modal')
     modalDom.style.zIndex = zIndex
     document.body.appendChild(modalDom)
+    this.modalStack.push({ id, zIndex })
   },
-  closeModal: function () {
+  closeModal: function (id) {
+    const modalStack = this.modalStack
+    const topItem = modalStack[modalStack.length - 1]
+    if (topItem.id === id) {
+      modalStack.pop()
+    }
     const modalDom = PopupManager.getModal()
     if (modalDom.parentNode) modalDom.parentNode.removeChild(modalDom)
     PopupManager.modalDom = undefined
   }
+  // doOnModalClick: function () {
+  //   const topItem = PopupManager.modalStack[PopupManager.modalStack.length - 1]
+  //   if (!topItem) return
+  //   const instance = PopupManager.getInstance(topItem.id)
+  //   if (instance) {
+  //     instance.close()
+  //   }
+  // }
 }
 
 export default PopupManager
