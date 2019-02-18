@@ -4,6 +4,7 @@
       <div slot="header">测试头部</div>
       <div>测试body
         <p>加点东西测试一下提交是否需要输入密码</p>
+        <p>在测试一下</p>
       </div>
       <div slot="footer">测试尾部</div>
     </x-modal>
