@@ -1,18 +1,20 @@
 <template>
-  <div class="x-dialog-wrap" v-show="visible" @click.self="handleWrapperClick">
-    <div class="x-dialog" :style="style">
-      <div class="x-dialog-header">
-        <slot name="header">默认头部</slot>
-        <button class="x-dialog-btn-close" @click="handleClose">关闭</button>
-      </div>
-      <div class="x-dialog-body">
-        <slot>默认body</slot>
-      </div>
-      <div class="x-dialog-footer">
-        <slot name="footer">默认尾部</slot>
+  <transition name="dialog-fade">
+    <div class="x-dialog-wrap" :style="{transformOrigin:transformOrigin}" v-show="visible" @click.self="handleWrapperClick">
+      <div class="x-dialog" :style="style">
+        <div class="x-dialog-header">
+          <slot name="header">默认头部</slot>
+          <button class="x-dialog-btn-close" @click="handleClose">关闭</button>
+        </div>
+        <div class="x-dialog-body">
+          <slot>默认body</slot>
+        </div>
+        <div class="x-dialog-footer">
+          <slot name="footer">默认尾部</slot>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
 import popup from '@/mixins/popup'
@@ -28,9 +30,23 @@ export default {
     }
   },
   mixins: [popup],
+  created () {
+    document.documentElement.addEventListener('click', (e) => {
+      console.log(e)
+      console.log(this.transformOrigin)
+      this.transformOrigin = `${e.pageX} ${e.pageY}`
+      // mousePosition = {
+      //   x: e.pageX,
+      //   y: e.pageY,
+      // };
+      // 100ms 内发生过点击事件，则从点击位置动画展示
+      // 否则直接 zoom 展示
+      // 这样可以兼容非点击方式展开
+    })
+  },
   data () {
     return {
-
+      transformOrigin: '50% 50%'
     }
   },
   computed: {
@@ -52,10 +68,47 @@ export default {
     hide () {
       this.$emit('update:visible', false)
     }
+  },
+  watch: {
+    visible (val) {
+      if (val) {
+
+      } else {
+      }
+    }
   }
 }
 </script>
 <style>
+.dialog-fade-enter-active {
+  animation: zoomIn .3s;
+}
+
+.dialog-fade-leave-active {
+  animation: zoomOut .3s;
+}
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.6, 0.6, 0.6);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+    transform: scale3d(0.6, 0.6, 0.6);
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .x-dialog-wrap{
   position: fixed;
   top: 0;
@@ -66,7 +119,7 @@ export default {
 }
 .x-dialog{
   position: relative;
-  margin: 0 auto 50px;
+  margin: 0 auto;
   background: #fff;
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
