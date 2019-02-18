@@ -2,7 +2,9 @@
   <div class="container">
     <x-modal :visible.sync="visible">
       <div slot="header">测试头部</div>
-      <div>测试body</div>
+      <div>测试body
+        <p>加点东西测试一下提交是否需要输入密码</p>
+      </div>
       <div slot="footer">测试尾部</div>
     </x-modal>
     <el-button slot="append" @click="openDialog" size="mini">打开dialog框</el-button>
