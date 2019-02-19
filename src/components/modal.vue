@@ -1,6 +1,6 @@
 <template>
   <transition name="dialog-fade">
-    <div class="x-dialog-wrap" :style="{transformOrigin:transformOrigin}" v-show="visible" @click.self="handleWrapperClick">
+    <div class="x-dialog-wrap" :style="{transformOrigin:transformOrigin}" v-show="selfVisible" @click.self="handleWrapperClick">
       <div class="x-dialog" :style="style">
         <div class="x-dialog-header">
           <slot name="header">默认头部</slot>
@@ -30,25 +30,6 @@ export default {
     }
   },
   mixins: [popup],
-  created () {
-    document.documentElement.addEventListener('click', (e) => {
-      console.log(e)
-      console.log(this.transformOrigin)
-      this.transformOrigin = `${e.pageX} ${e.pageY}`
-      // mousePosition = {
-      //   x: e.pageX,
-      //   y: e.pageY,
-      // };
-      // 100ms 内发生过点击事件，则从点击位置动画展示
-      // 否则直接 zoom 展示
-      // 这样可以兼容非点击方式展开
-    })
-  },
-  data () {
-    return {
-      transformOrigin: '50% 50%'
-    }
-  },
   computed: {
     style () {
       const { width, top } = this
@@ -68,14 +49,6 @@ export default {
     hide () {
       this.$emit('update:visible', false)
     }
-  },
-  watch: {
-    visible (val) {
-      if (val) {
-
-      } else {
-      }
-    }
   }
 }
 </script>
@@ -90,7 +63,7 @@ export default {
 @keyframes zoomIn {
   from {
     opacity: 0;
-    transform: scale3d(0.6, 0.6, 0.6);
+    transform: scale3d(0.8, 0.8, 0.8);
   }
   50% {
     opacity: 1;
@@ -102,7 +75,7 @@ export default {
   }
   50% {
     opacity: 0;
-    transform: scale3d(0.6, 0.6, 0.6);
+    transform: scale3d(0.8, 0.8, 0.8);
   }
   to {
     opacity: 0;
