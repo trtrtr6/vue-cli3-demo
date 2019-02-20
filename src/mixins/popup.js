@@ -25,26 +25,22 @@ export default{
     PopupManager.deregister(this._popupId)
     PopupManager.closeModal(this._popupId)
   },
+  created () {
+    document.documentElement.addEventListener('click', (e) => {
+      this.transformOrigin = `${e.pageX}px ${e.pageY}px`
+      // 100ms 内发生过点击事件，则从点击位置动画展示
+      // 否则直接 zoom 展示
+      // 这样可以兼容非点击方式展开
+    })
+  },
   mounted () {
-    // 暂时没有什么比较好的方式去实现自动获取，后期完善
-    // document.documentElement.addEventListener('click', (e) => {
-    //   console.log(e)
-    //   console.log(this.transformOrigin)
-    //   this.transformOrigin = `${e.pageX} ${e.pageY}`
-    //   // mousePosition = {
-    //   //   x: e.pageX,
-    //   //   y: e.pageY,
-    //   // };
-    //   // 100ms 内发生过点击事件，则从点击位置动画展示
-    //   // 否则直接 zoom 展示
-    //   // 这样可以兼容非点击方式展开
-    // })
   },
   methods: {
     open () {
-      if (this.event) {
-        this.transformOrigin = `${this.event.pageX}px ${this.event.pageY}px`
-      }
+      // 可以实现自动获取了，暂时注释掉，后期在观察全局自动获取是否可靠
+      // if (this.event) {
+      // this.transformOrigin = `${this.event.pageX}px ${this.event.pageY}px`
+      // }
       this.selfVisible = true
       this.doOpen()
     },
