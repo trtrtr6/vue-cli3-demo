@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <x-modal :visible.sync="visible" :event="dialogEvent">
+    <x-modal :visible.sync="visible" :event="dialogEvent" @close="close" @open="open">
       <div slot="header">测试头部</div>
       <div>测试body
         <p>加点东西测试一下提交是否需要输入密码</p>
@@ -58,9 +58,14 @@ export default {
   },
   methods: {
     openDialog (e) {
-      console.log(typeof e)
       this.dialogEvent = e
       this.visible = true
+    },
+    close () {
+      console.log('监听关闭状态')
+    },
+    open () {
+      console.log('监听打开状态')
     },
     openDialog1 () {
       this.visible1 = true

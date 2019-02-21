@@ -48,6 +48,14 @@ export default {
     },
     hide () {
       this.$emit('update:visible', false)
+      this.$emit('close')
+    }
+  },
+  watch: {
+    selfVisible (val) {
+      if (val) {
+        this.$emit('open')
+      }
     }
   }
 }
