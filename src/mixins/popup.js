@@ -31,6 +31,7 @@ export default{
       // 100ms 内发生过点击事件，则从点击位置动画展示
       // 否则直接 zoom 展示
       // 这样可以兼容非点击方式展开
+      setTimeout(() => (this.transformOrigin = '10% 10%'), 100)
     })
   },
   mounted () {
