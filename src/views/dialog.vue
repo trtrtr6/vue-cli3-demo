@@ -33,9 +33,9 @@
       <div slot="footer">测试尾部</div>
     </x-modal>
     <el-button slot="append" @click="openDialog($event)" size="mini">打开dialog框</el-button>
-    <el-button style="position:absolute;bottom:0;" slot="append" @click="openDialog1($event)" size="mini">打开dialog框</el-button>
-    <el-button style="position:absolute;right:0;" slot="append" @click="openDialog2($event)" size="mini">打开dialog框</el-button>
-    <el-button style="position:absolute;top:200px;" slot="append" @click="openDialog3($event)" size="mini">打开dialog框</el-button>
+    <el-button style="position:absolute;bottom:0;" slot="append" @click="openDialog1($event)" size="mini">打开dialog1框</el-button>
+    <el-button style="position:absolute;right:0;" slot="append" @click="openDialog2($event)" size="mini">打开dialog2框</el-button>
+    <el-button style="position:absolute;top:200px;" slot="append" @click="openDialog3($event)" size="mini">打开dialog3框</el-button>
   </div>
 </template>
 <script>
@@ -62,16 +62,13 @@ export default {
       this.dialogEvent = e
       this.visible = true
     },
-    openDialog1 (e) {
-      this.dialogEvent1 = e
+    openDialog1 () {
       this.visible1 = true
     },
-    openDialog2 (e) {
-      this.dialogEvent2 = e
+    openDialog2 () {
       this.visible2 = true
     },
-    openDialog3 (e) {
-      this.dialogEvent2 = e
+    openDialog3 () {
       this.visible2 = true
     }
   }

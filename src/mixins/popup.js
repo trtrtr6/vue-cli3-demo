@@ -14,7 +14,8 @@ export default{
   data () {
     return {
       selfVisible: false,
-      transformOrigin: '10% 10%'
+      transformOrigin: null,
+      clickPosition: null
     }
   },
   beforeMount () {
@@ -27,11 +28,11 @@ export default{
   },
   created () {
     document.documentElement.addEventListener('click', (e) => {
-      this.transformOrigin = `${e.pageX}px ${e.pageY}px`
+      this.clickPosition = `${e.pageX}px ${e.pageY}px`
       // 100ms 内发生过点击事件，则从点击位置动画展示
       // 否则直接 zoom 展示
       // 这样可以兼容非点击方式展开
-      setTimeout(() => (this.transformOrigin = '10% 10%'), 100)
+      setTimeout(() => (this.clickPosition = null), 100)
     })
   },
   mounted () {
@@ -42,6 +43,7 @@ export default{
       // if (this.event) {
       // this.transformOrigin = `${this.event.pageX}px ${this.event.pageY}px`
       // }
+      this.transformOrigin = this.clickPosition
       this.selfVisible = true
       this.doOpen()
     },
