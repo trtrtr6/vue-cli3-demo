@@ -2,7 +2,7 @@ import { baseUrl } from './env'
 import { getBasicReqInfo } from './mUtils'
 import store from '../store/'
 
-export default async (url = '', data = {}, type = 'GET') => {
+export default async (url = '', fileName = 'download.zip', data = {}, type = 'GET') => {
   type = type.toUpperCase()
   url = baseUrl + url
   let reqData = getBasicReqInfo()
@@ -48,9 +48,8 @@ export default async (url = '', data = {}, type = 'GET') => {
     const blob = await response.blob()
     var a = document.createElement('a')
     var downloadUrl = window.URL.createObjectURL(blob)
-    var filename = 'materials.zip'
     a.href = downloadUrl
-    a.download = filename
+    a.download = fileName
     a.click()
     window.URL.revokeObjectURL(downloadUrl)
   } catch (error) {
