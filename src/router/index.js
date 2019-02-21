@@ -17,6 +17,7 @@ const Flip2 = () => import(/* webpackChunkName: "flip2" */ '@/views/flip2.vue')
 const Flip3 = () => import(/* webpackChunkName: "flip3" */ '@/views/flip3.vue')
 const TimeFormat = () => import(/* webpackChunkName: "timeFormat" */ '@/views/timeFormat.vue')
 const Dialog = () => import(/* webpackChunkName: "dialog" */ '@/views/dialog.vue')
+const DatePick = () => import(/* webpackChunkName: "datePick" */ '@/views/datePick.vue')
 
 const routes = [
   {
@@ -71,6 +72,11 @@ const routes = [
     path: '/dialog',
     name: '自定义弹窗',
     component: Dialog
+  },
+  {
+    path: '/datePick',
+    name: '日期选择器',
+    component: DatePick
   },
   {
     path: '/other',

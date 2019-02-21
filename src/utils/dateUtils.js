@@ -64,7 +64,7 @@ export default {
    * @param {*} date
    * @param {*} fmt
    */
-  dateFormat (date, fmt) {
+  dateFormat (date, fmt = 'yyyy-MM-dd') {
     date = typeof date !== 'object' ? new Date(date) : date
     var o = {
       'M+': date.getMonth() + 1, // 月份
@@ -132,5 +132,26 @@ export default {
       returnTime = this.dateFormat(timeValue, 'yyyy-MM-dd')// 显示年月日
     }
     return returnTime
+  },
+  // 获取当月的日期矩阵（默认6行），不够的用上月或者下月日期来补
+  getMonthMatrix (date) {
+    const d = new Date(date)
+    d.setDate(1)
+    const currentMonth = d.getMonth()
+    // 获取矩阵开始日期
+    d.setDate(1 - d.getDay())
+    const matrix = []
+    for (let i = 0; i < 42; i++) {
+      if (i > 0) {
+        d.setDate(d.getDate() + 1)
+      }
+      const month = d.getMonth()
+      const dayObj = {}
+      dayObj.date = d.getDate()
+      dayObj.index = d.getDay()
+      dayObj.isCurrentMonth = (month === currentMonth)
+      matrix.push(dayObj)
+    }
+    return matrix
   }
 }
