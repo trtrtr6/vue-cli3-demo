@@ -135,4 +135,21 @@ export default {
   opacity: 0.5;
   background: #000;
 }
+.x-modal-enter {
+  animation: v-modal-in .2s ease; }
+
+.x-modal-leave {
+  animation: v-modal-out .2s ease forwards; }
+
+@keyframes v-modal-in {
+  0% {
+    opacity: 0; }
+  100% { }
+}
+@keyframes v-modal-out {
+  0% { }
+  100% {
+    opacity: 0;
+  }
+}
 </style>

@@ -33,6 +33,7 @@ const PopupManager = {
   openModal: function (id, zIndex, dom) {
     const modalDom = PopupManager.getModal()
     addClass(modalDom, 'x-modal')
+    addClass(modalDom, 'x-modal-enter')
     modalDom.style.zIndex = zIndex
     document.body.appendChild(modalDom)
     this.modalStack.push({ id, zIndex })
@@ -44,8 +45,11 @@ const PopupManager = {
       modalStack.pop()
     }
     const modalDom = PopupManager.getModal()
-    if (modalDom.parentNode) modalDom.parentNode.removeChild(modalDom)
-    PopupManager.modalDom = undefined
+    addClass(modalDom, 'x-modal-leave')
+    setTimeout(() => {
+      if (modalDom.parentNode) modalDom.parentNode.removeChild(modalDom)
+      PopupManager.modalDom = undefined
+    }, 200)
   }
   // doOnModalClick: function () {
   //   const topItem = PopupManager.modalStack[PopupManager.modalStack.length - 1]
