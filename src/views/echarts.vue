@@ -1,7 +1,6 @@
 <template>
   <div style="width:300px;height:300px;">
     <line-charts></line-charts>
-    <div>test</div>
   </div>
 </template>
 
