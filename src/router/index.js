@@ -18,6 +18,7 @@ const Flip3 = () => import(/* webpackChunkName: "flip3" */ '@/views/flip3.vue')
 const TimeFormat = () => import(/* webpackChunkName: "timeFormat" */ '@/views/timeFormat.vue')
 const Dialog = () => import(/* webpackChunkName: "dialog" */ '@/views/dialog.vue')
 const DatePick = () => import(/* webpackChunkName: "datePick" */ '@/views/datePick.vue')
+const Echarts = () => import(/* webpackChunkName: "echarts" */ '@/views/echarts.vue')
 
 const routes = [
   {
@@ -77,6 +78,11 @@ const routes = [
     path: '/datePick',
     name: '日期选择器',
     component: DatePick
+  },
+  {
+    path: '/echarts',
+    name: '图表相关',
+    component: Echarts
   },
   {
     path: '/other',
