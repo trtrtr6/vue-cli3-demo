@@ -9,6 +9,7 @@ import 'muse-ui/dist/muse-ui.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'flexboxgrid/dist/flexboxgrid.min.css'
+import './style.less'
 import TestApi from '@/api/test'
 
 Vue.config.productionTip = false

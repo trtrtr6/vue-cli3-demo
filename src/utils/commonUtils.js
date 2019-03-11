@@ -51,3 +51,20 @@ export const removeSessionStore = name => {
   if (!name) return
   window.sessionStorage.removeItem(name)
 }
+
+export default {
+  /**
+   * 遍历json对象
+   * @param {*} json
+   */
+  traverseTree (jsonObj, dealFun) {
+    for (let key in jsonObj) {
+      if (!(jsonObj[key] instanceof Object)) {
+        console.log(key + ' = ' + jsonObj[key]) // 如果不是Object则打印键值
+        if (typeof dealFun === 'function') dealFun(jsonObj, key)
+      } else {
+        this.traverseTree(jsonObj[key]) // 如果是Object则递归
+      }
+    }
+  }
+}

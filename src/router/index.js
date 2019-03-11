@@ -19,6 +19,8 @@ const TimeFormat = () => import(/* webpackChunkName: "timeFormat" */ '@/views/ti
 const Dialog = () => import(/* webpackChunkName: "dialog" */ '@/views/dialog.vue')
 const DatePick = () => import(/* webpackChunkName: "datePick" */ '@/views/datePick.vue')
 const Echarts = () => import(/* webpackChunkName: "echarts" */ '@/views/echarts.vue')
+const TabDemo = () => import(/* webpackChunkName: "tabDemo" */ '@/views/tabDemo.vue')
+const TabMountDemo = () => import(/* webpackChunkName: "tabMounting" */ '@/views/tabMounting.vue')
 
 const routes = [
   {
@@ -83,6 +85,16 @@ const routes = [
     path: '/echarts',
     name: '图表相关',
     component: Echarts
+  },
+  {
+    path: '/tabDemo',
+    name: 'tab切换',
+    component: TabDemo
+  },
+  {
+    path: '/tabMountDemo',
+    name: 'tab切换吸顶demo',
+    component: TabMountDemo
   },
   {
     path: '/other',
