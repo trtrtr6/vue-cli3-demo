@@ -55,6 +55,7 @@
         </div>
       </div>
     </div>
+    <div class="test"></div>
   </div>
 </template>
 <script>
@@ -99,10 +100,15 @@ export default {
   .tab-box{
     width:100%;
     position: absolute;
-    padding:10px
+    padding:10px;
   }
   .content-box{
     padding: 50px 10px 0 10px;
+  }
+  .test{
+    border:1px solid #ddd;/*px*/
+    margin: 20px;
+    height:200px;
   }
 }
 </style>
