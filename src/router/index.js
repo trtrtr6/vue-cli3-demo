@@ -21,6 +21,7 @@ const DatePick = () => import(/* webpackChunkName: "datePick" */ '@/views/datePi
 const Echarts = () => import(/* webpackChunkName: "echarts" */ '@/views/echarts.vue')
 const TabDemo = () => import(/* webpackChunkName: "tabDemo" */ '@/views/tabDemo.vue')
 const TabMountDemo = () => import(/* webpackChunkName: "tabMounting" */ '@/views/tabMounting.vue')
+const Validate = () => import(/* webpackChunkName: "validate" */ '@/views/validate.vue')
 
 const routes = [
   {
@@ -95,6 +96,11 @@ const routes = [
     path: '/tabMountDemo',
     name: 'tab切换吸顶demo',
     component: TabMountDemo
+  },
+  {
+    path: '/validate',
+    name: 'Proxy类型数据劫持校验',
+    component: Validate
   },
   {
     path: '/other',
