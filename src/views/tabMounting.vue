@@ -25,7 +25,7 @@
     </mu-container>
     <div class="main-box">
       <div class="row center-xs middle-xs tab-box">
-        <x-tab v-model="tab" :tabList="tabList"></x-tab>
+        <x-tab v-model="tab" :tabList="tabList" :isFixed="true"></x-tab>
       </div>
       <div class="content-box" ref="content-box">
         <div class="box-item" v-for="(item, index) in tabList" :key="index">

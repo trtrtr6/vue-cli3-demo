@@ -1,12 +1,13 @@
 <template>
-  <div class="x-tab-contain">
-    <div class="x-tab-main row">
+  <div class="x-tab-contain" ref='tabBar'>
+    <div class="x-tab-main row" :class="{'x-is-fixed': isShowFixed}" :style="{width:tabWidth}">
       <template v-for="(item, index) in tabList">
         <div class="x-tab-item col-xs row center-xs middle-xs" :class="[isActive === item.value ? 'active' : '']" :key="index" @click="swichTab(item)">
           <div>{{item.label}}</div>
         </div>
       </template>
     </div>
+    <div class="x-place-box" v-show="isShowFixed" :style="{height:tabHeight}"></div>
   </div>
 </template>
 <script>
@@ -19,22 +20,51 @@ export default {
     tabList: {
       type: Array,
       default: () => { return [] }
+    },
+    isFixed: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
-      isActive: this.value
+      isActive: this.value,
+      isShowFixed: false,
+      tabWidth: '100%',
+      tabHeight: '0'
+    }
+  },
+  mounted () {
+    if (this.isFixed) {
+      window.addEventListener('scroll', this.handleScroll)
     }
   },
   methods: {
     swichTab (item) {
       this.isActive = item.value
       this.$emit('input', item.value)
+    },
+    handleScroll () {
+      // let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      let rect = this.$refs.tabBar.getBoundingClientRect()
+      const top = rect.top
+      const flag = top < 0
+      if (this.isShowFixed !== flag) {
+        this.isShowFixed = flag
+        if (flag) {
+          this.tabWidth = `${rect.width}px`
+          this.tabHeight = `${rect.height}px`
+        }
+      }
+    },
+    toggle (tabIndex) {
+      this.whichTab = tabIndex
+      window.location.href = '#tabar' // 锚点
     }
   }
 }
 </script>
-<style>
+<style lang="less">
 .x-tab-contain{
   width:100%;
   height:100%;
@@ -71,5 +101,16 @@ export default {
   background-color: #409eff;
   border-color: #409eff;
   box-shadow: -1px 0 0 0 #409eff;
+}
+.x-tab-main{
+  width:100%;
+  .x-place-box{
+    width:100%;
+  }
+}
+.x-is-fixed{
+  position: fixed;
+  top:0px;
+  z-index:999;
 }
 </style>
