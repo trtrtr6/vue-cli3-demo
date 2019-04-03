@@ -24,7 +24,7 @@ export default {
     styles () {
       console.log(this.mergeStyle)
       console.log(this.color)
-      return Object.assign({}, {color: this.color, opacity: this.opacity}, this.mergeStyle)
+      return Object.assign({}, { color: this.color, opacity: this.opacity }, this.mergeStyle)
     }
   }
 }

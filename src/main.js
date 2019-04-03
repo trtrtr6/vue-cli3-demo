@@ -1,8 +1,5 @@
 import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store/'
-import VueLodash from 'vue-lodash'
+// import './style/reset.css' 不需要了，下面引用的框架里面自带基础reset样式
 import 'lib-flexible'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
@@ -10,6 +7,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'flexboxgrid/dist/flexboxgrid.min.css'
 import './style.less'
+import router from './router'
+import App from './App.vue'
+import store from './store/'
+import VueLodash from 'vue-lodash'
 import TestApi from '@/api/test'
 
 Vue.config.productionTip = false

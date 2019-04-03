@@ -12,9 +12,11 @@ module.exports = {
   productionSourceMap: false,
   parallel: undefined,
   css: undefined,
+
   chainWebpack: (config) => {
     config.resolve.alias.set('@', resolve('src'))
   },
+
   configureWebpack: {
     plugins: [
       new MonacoWebpackPlugin()
@@ -24,6 +26,7 @@ module.exports = {
       lodash: '_'
     }
   },
+
   pages: {
     index: {
       // page 的入口
@@ -44,5 +47,7 @@ module.exports = {
     // 并且如果找不到的话，就回退到 `public/index.html`。
     // 输出文件名会被推导为 `subpage.html`。
     // subpage: 'src/subpage/main.js'
-  }
+  },
+
+  publicPath: './'
 }
