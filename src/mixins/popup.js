@@ -65,7 +65,7 @@ export default{
   watch: {
     visible (val) {
       if (val) {
-        this.open()
+        setTimeout(() => (this.open()), 0)
       } else {
         this.close()
       }

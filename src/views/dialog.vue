@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <x-modal :visible.sync="visible" :event="dialogEvent" @close="close" @open="open">
+    <x-modal :visible.sync="visible" @close="close" @open="open">
       <div slot="header">测试头部</div>
       <div>测试body
         <p>加点东西测试一下提交是否需要输入密码</p>
@@ -8,24 +8,24 @@
       </div>
       <div slot="footer">测试尾部</div>
     </x-modal>
-    <x-modal :visible.sync="visible1" :event="dialogEvent1">
-      <div slot="header">测试头部</div>
+    <x-modal :visible.sync="visible1">
+      <div slot="header">测试头部1</div>
       <div>测试body
         <p>加点东西测试一下提交是否需要输入密码</p>
         <p>在测试一下</p>
       </div>
       <div slot="footer">测试尾部</div>
     </x-modal>
-    <x-modal :visible.sync="visible2" :event="dialogEvent2">
-      <div slot="header">测试头部</div>
+    <x-modal :visible.sync="visible2">
+      <div slot="header">测试头部2</div>
       <div>测试body
         <p>加点东西测试一下提交是否需要输入密码</p>
         <p>在测试一下</p>
       </div>
       <div slot="footer">测试尾部</div>
     </x-modal>
-    <x-modal :visible.sync="visible3" :event="dialogEvent3">
-      <div slot="header">测试头部</div>
+    <x-modal :visible.sync="visible3">
+      <div slot="header">测试头部3</div>
       <div>测试body
         <p>加点东西测试一下提交是否需要输入密码</p>
         <p>在测试一下</p>
@@ -46,19 +46,14 @@ export default {
       visible: false,
       visible1: false,
       visible2: false,
-      visible3: false,
-      dialogEvent: undefined,
-      dialogEvent1: undefined,
-      dialogEvent2: undefined,
-      dialogEvent3: undefined
+      visible3: false
     }
   },
   components: {
     XModal
   },
   methods: {
-    openDialog (e) {
-      this.dialogEvent = e
+    openDialog () {
       this.visible = true
     },
     close () {
@@ -74,7 +69,7 @@ export default {
       this.visible2 = true
     },
     openDialog3 () {
-      this.visible2 = true
+      this.visible3 = true
     }
   }
 }
