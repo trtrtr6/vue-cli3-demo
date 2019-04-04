@@ -1,6 +1,6 @@
 <template>
-  <transition name="mu-ripple">
-    <div class="mu-circle-ripple" :style="styles"/>
+  <transition name="x-ripple" appear @enter="enter" @beforeEnter="beforeEnter">
+    <div class="x-circle-ripple" :style="styles"/>
   </transition>
 </template>
 <script>
@@ -26,12 +26,20 @@ export default {
       console.log(this.color)
       return Object.assign({}, { color: this.color, opacity: this.opacity }, this.mergeStyle)
     }
+  },
+  methods: {
+    enter () {
+      console.log('enter')
+    },
+    beforeEnter () {
+      console.log('beforeEnter')
+    }
   }
 }
 </script>
 
 <style lang="less">
-.mu-circle-ripple{
+.x-circle-ripple{
   position: absolute;
   width: 100%;
   height: 100%;
@@ -45,15 +53,15 @@ export default {
   opacity: 0.1;
 }
 
-.mu-ripple-enter-active, .mu-ripple-leave-active{
+.x-ripple-enter-active, .x-ripple-leave-active{
   transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1), opacity 2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.mu-ripple-enter {
+.x-ripple-enter {
   transform: scale(0);
 }
 
-.mu-ripple-leave-active{
+.x-ripple-leave-active{
   opacity: 0 !important;
 }
 </style>
