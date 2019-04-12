@@ -94,6 +94,24 @@ export default {
     date.setTime(Math.random(dif) * dif + start)
     return date
   },
+  /**
+   * 是否今天
+   * @param {*} d
+   */
+  isToday (d, cd = new Date()) {
+    d = ((typeof d !== 'object') && new Date(d)) || d
+    cd = ((typeof cd !== 'object') && new Date(cd)) || cd
+    if (this.isYear(d, cd) && this.isMounth(d, cd)) {
+      if (d.getDate() === cd.getDate()) {
+        return true
+      }
+    }
+    return false
+  },
+  /**
+   * 是否昨天
+   * @param {*} d
+   */
   isYestday (d) {
     d = typeof d !== 'object' ? new Date(d) : d
     const date = (new Date()) // 当前时间
@@ -102,11 +120,30 @@ export default {
     const timeValue = d.getTime()
     return timeValue < today && yestday <= timeValue
   },
-  isYear (d) {
-    d = typeof d !== 'object' ? new Date(d) : d
-    const takeNewYear = this.dateFormat(new Date(), 'yyyy')// 当前时间的年份
-    const takeTimeValue = this.dateFormat(d, 'yyyy')// 传入时间的年份
-    return takeTimeValue === takeNewYear
+  /**
+   * 是否本月
+   */
+  isMounth (d, cd = new Date()) {
+    d = ((typeof d !== 'object') && new Date(d)) || d
+    cd = ((typeof cd !== 'object') && new Date(cd)) || cd
+    if (this.isYear(d, cd)) {
+      if (d.getMonth() === cd.getMonth()) {
+        return true
+      }
+    }
+    return false
+  },
+  /**
+   * 是否本年
+   * @param {*} d
+   */
+  isYear (d, cd = new Date()) {
+    d = ((typeof d !== 'object') && new Date(d)) || d
+    cd = ((typeof cd !== 'object') && new Date(cd)) || cd
+    if (d.getFullYear() === cd.getFullYear()) {
+      return true
+    }
+    return false
   },
   /**
    * 1分钟内显示刚刚,1小时内显示xx分钟前,今日的显示时分,昨天显示昨天+时分,一年内显示月日时分,一年外显示年月日
@@ -135,9 +172,9 @@ export default {
   },
   // 获取当月的日期矩阵（默认6行），不够的用上月或者下月日期来补
   getMonthMatrix (date) {
+    const cd = new Date(date)
     const d = new Date(date)
     d.setDate(1)
-    const currentMonth = d.getMonth()
     // 获取矩阵开始日期
     d.setDate(1 - d.getDay())
     const matrix = []
@@ -145,11 +182,12 @@ export default {
       if (i > 0) {
         d.setDate(d.getDate() + 1)
       }
-      const month = d.getMonth()
       const dayObj = {}
-      dayObj.date = d.getDate()
+      dayObj.date = d
+      dayObj.day = d.getDate()
       dayObj.index = d.getDay()
-      dayObj.isCurrentMonth = (month === currentMonth)
+      dayObj.isCurrentMonth = this.isMounth(d, cd)
+      dayObj.isToday = this.isToday(d, new Date())
       matrix.push(dayObj)
     }
     return matrix
