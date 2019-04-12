@@ -12,6 +12,7 @@ import App from './App.vue'
 import store from './store/'
 import VueLodash from 'vue-lodash'
 import TestApi from '@/api/test'
+import VueWorker from 'vue-worker'
 
 Vue.config.productionTip = false
 
@@ -20,6 +21,7 @@ Vue.use(MuseUI)
 Vue.use(ElementUI)
 
 Vue.use(TestApi)
+Vue.use(VueWorker)
 
 console.log(process.env.NODE_ENV)
 console.log(process.env.VUE_APP_TITLE)
