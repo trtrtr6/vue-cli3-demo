@@ -105,5 +105,45 @@ export default {
       }
       return a
     }, {})
+  },
+  /**
+   * 条件筛选对象属性组成新的对象
+   * @param {*} o
+   * @param {*} fun
+   */
+  pickBy (o, fun) {
+    return Object.keys(o).reduce((a, x) => {
+      if (o && typeof fun === 'function' && fun(o[x])) {
+        a[x] = o[x]
+      }
+      return a
+    }, {})
+  },
+  /**
+   * 筛除不需要的属性组成新的对象
+   * @param {*} o
+   * @param  {...any} props
+   */
+  omit (o, ...props) {
+    let keys = typeof props[0] === 'object' ? props[0] : props
+    return keys.reduce((a, x) => {
+      if (o && !o.hasOwnProperty(x)) { // 也可使用 (x in o)
+        a[x] = o[x]
+      }
+      return a
+    }, {})
+  },
+  /**
+   * 条件筛除不需要的属性组成新的对象
+   * @param {*} o
+   * @param {*} fun
+   */
+  omitBy (o, fun) {
+    return Object.keys(o).reduce((a, x) => {
+      if (o && typeof fun === 'function' && !fun(o[x])) {
+        a[x] = o[x]
+      }
+      return a
+    }, {})
   }
 }
