@@ -22,6 +22,9 @@ const Echarts = () => import(/* webpackChunkName: "echarts" */ '@/views/echarts.
 const TabDemo = () => import(/* webpackChunkName: "tabDemo" */ '@/views/tabDemo.vue')
 const TabMountDemo = () => import(/* webpackChunkName: "tabMounting" */ '@/views/tabMounting.vue')
 const Validate = () => import(/* webpackChunkName: "validate" */ '@/views/validate.vue')
+const ViewPart = () => import(/* webpackChunkName: "viewPart" */ '@/views/viewPart.vue')
+const WaterCompView = () => import(/* webpackChunkName: "waterCompView" */ '@/views/waterCompView.vue')
+const PkCompView = () => import(/* webpackChunkName: "pkCompView" */ '@/views/pkCompView.vue')
 
 const routes = [
   {
@@ -101,6 +104,21 @@ const routes = [
     path: '/validate',
     name: 'Proxy类型数据劫持校验',
     component: Validate
+  },
+  {
+    path: '/viewPart',
+    name: '页面显示部分内容',
+    component: ViewPart
+  },
+  {
+    path: '/waterCompView',
+    name: '水球动画组件',
+    component: WaterCompView
+  },
+  {
+    path: '/pkCompView',
+    name: 'pk投票组件',
+    component: PkCompView
   },
   {
     path: '/other',

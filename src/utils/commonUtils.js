@@ -57,6 +57,7 @@ export const removeSessionStore = name => {
 export const browser = {
   versions: (function () {
     let u = navigator.userAgent
+    console.log('我执行了')
     return {
       trident: u.indexOf('Trident') > -1, // IE内核
       presto: u.indexOf('Presto') > -1, // opera内核
@@ -146,4 +147,65 @@ export default {
       return a
     }, {})
   }
+}
+
+/**
+ * 函数防抖 (只执行最后一次点击)
+ * @param fn
+ * @param t
+ * @returns {Function}
+ * @constructor
+ */
+export const Debounce = (fn, t = 500) => {
+  let timer
+  return function () {
+    let args = arguments
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      timer = null
+      fn.apply(this, args)
+    }, t)
+  }
+}
+/**
+ * 函数节流（规定时间内只一次生效）
+ * @param fn
+ * @param t
+ * @returns {Function}
+ * @constructor
+ */
+export const Throttle = (fn, t = 500) => {
+  let timer
+  let prev = 0
+  return function () {
+    let now = Date.now()
+    let remaining = t - (now - prev)
+    let args = arguments
+    if (remaining <= 0 || remaining > t) {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+      prev = now
+      fn.apply(this, args)
+    } else if (!timer) {
+      timer = setTimeout(() => {
+        prev = Date.now()
+        timer = null
+        fn.apply(this, args)
+      }, remaining)
+    }
+  }
+}
+/**
+ * 获取当前设备下的px值，
+ * 主要用于canvas及各种无法设置rem的情况，手动计算适配各种设备
+ * （依赖于flexible.js）
+ * @param {*} px 
+ * @param {*} rem 默认75
+ */
+export const getCurrentPx = (px, rem = 75) => {
+  return parseFloat(document.documentElement.style.fontSize)*px/rem
 }

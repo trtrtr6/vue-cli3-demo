@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-mounting-demo">
+  <div class="tab-mounting-demo" @click="testThrottle">
     <mu-container>
       <mu-card style="width: 100%; margin: 0 auto;">
         <mu-card-header title="Myron Avatar" sub-title="sub title">
@@ -60,6 +60,7 @@
 </template>
 <script>
 import xTab from '@/components/tab'
+import { Throttle } from '@/utils/commonUtils'
 export default {
   data () {
     return {
@@ -84,11 +85,22 @@ export default {
     xTab
   },
   mounted () {
+    window.addEventListener('scroll', () => {
+      this.test()
+    })
   },
   methods: {
-    getRectInfo () {
-
-    }
+    test: Throttle(function () {
+      console.log('scroll触发了：' + new Date())
+    }, 1000),
+    // testThrottle () { // 错误的调用方式，无效
+    //   return Throttle(function () {
+    //     console.log('click触发了：' + new Date())
+    //   }, 1000)
+    // },
+    testThrottle: Throttle(function () {
+      console.log('click触发了：' + new Date())
+    }, 1000)
   }
 }
 </script>

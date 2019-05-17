@@ -1,6 +1,14 @@
 <template>
   <div>
-    <el-select v-model="mounth" placeholder="请选择" @change="change">
+    <el-select v-model="mounth" placeholder="请选择年份" @change="changeYear">
+      <el-option
+        v-for="item in years"
+        :key="item"
+        :label="item"
+        :value="item">
+      </el-option>
+    </el-select>
+    <el-select v-model="mounth" placeholder="请选择月份" @change="changeMounth">
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -17,12 +25,14 @@
 <script>
 import dateUtils from '@/utils/dateUtils'
 import { mounths } from '@/utils/constants'
+import {} from '@/utils/commonUtils'
 export default {
   data () {
     return {
-      date: dateUtils.dateFormat(new Date()),
+      date: new Date(),
       dateArr: [],
       mounth: 0,
+      years: [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
       options: mounths
     }
   },
@@ -36,7 +46,9 @@ export default {
       const dArr = dateUtils.getMonthMatrix(date)
       this.dateArr = dArr
     },
-    change (value) {
+    changeYear () {
+    },
+    changeMounth (value) {
       const date = new Date()
       date.setMonth(value)
       this.getDateMatrix(date)
