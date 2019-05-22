@@ -25,6 +25,7 @@ const Validate = () => import(/* webpackChunkName: "validate" */ '@/views/valida
 const ViewPart = () => import(/* webpackChunkName: "viewPart" */ '@/views/viewPart.vue')
 const WaterCompView = () => import(/* webpackChunkName: "waterCompView" */ '@/views/waterCompView.vue')
 const PkCompView = () => import(/* webpackChunkName: "pkCompView" */ '@/views/pkCompView.vue')
+const SvgIcon = () => import(/* webpackChunkName: "svgIcon" */ '@/views/svgIcon.vue')
 
 const routes = [
   {
@@ -119,6 +120,11 @@ const routes = [
     path: '/pkCompView',
     name: 'pk投票组件',
     component: PkCompView
+  },
+  {
+    path: '/svgIcon',
+    name: 'svg图标使用',
+    component: SvgIcon
   },
   {
     path: '/other',

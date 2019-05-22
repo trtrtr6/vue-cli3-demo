@@ -31,7 +31,7 @@ export default {
     text-align: left;
     text-decoration:underline;
     li{
-      font-size: 16px;
+      font-size: 24px;
       a{
         color:blue;
       }

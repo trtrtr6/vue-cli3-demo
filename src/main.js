@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import './style/reset.css' //不需要了，下面引用的框架里面自带基础reset样式
+import './style/reset.css' // 不需要了，下面引用的框架里面自带基础reset样式
 import 'lib-flexible'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
@@ -13,6 +13,7 @@ import store from './store/'
 import VueLodash from 'vue-lodash'
 import TestApi from '@/api/test'
 import VueWorker from 'vue-worker'
+import './assets/icons/index'
 
 Vue.config.productionTip = false
 

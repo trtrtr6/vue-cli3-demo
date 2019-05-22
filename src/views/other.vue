@@ -68,7 +68,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="less">
 .home{
   padding-top: 50px;
 }
