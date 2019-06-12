@@ -1,9 +1,9 @@
 <template>
   <div class="water-box">
-    <water class="water-wrapper" 
-      :rangeValue='rangeValue' 
-      :colorStart='colorInfo.colorStart' 
-      :colorEnd='colorInfo.colorEnd' 
+    <water class="water-wrapper"
+      :rangeValue='rangeValue'
+      :colorStart='colorInfo.colorStart'
+      :colorEnd='colorInfo.colorEnd'
       :textColor='colorInfo.textColor'
       :textStrokeColor='colorInfo.textStrokeColor'
       :duration='3000' ></water>
@@ -12,9 +12,9 @@
 <script>
 import water from '@/components/water'
 export default {
-  data(){
+  data () {
     return {
-      colorInfo:{
+      colorInfo: {
         colorStart: 'rgba(108,109,210,1)',
         colorEnd: 'rgba(75,81,168,0.2)',
         textColor: '#FE6400',
@@ -23,10 +23,10 @@ export default {
       rangeValue: -1
     }
   },
-  components:{
+  components: {
     water
   },
-  mounted(){
+  mounted () {
     this.rangeValue = 678
   }
 }

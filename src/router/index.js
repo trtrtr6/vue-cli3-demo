@@ -26,6 +26,7 @@ const ViewPart = () => import(/* webpackChunkName: "viewPart" */ '@/views/viewPa
 const WaterCompView = () => import(/* webpackChunkName: "waterCompView" */ '@/views/waterCompView.vue')
 const PkCompView = () => import(/* webpackChunkName: "pkCompView" */ '@/views/pkCompView.vue')
 const SvgIcon = () => import(/* webpackChunkName: "svgIcon" */ '@/views/svgIcon.vue')
+const Drop = () => import(/* webpackChunkName: "drop" */ '@/views/drop.vue')
 
 const routes = [
   {
@@ -125,6 +126,11 @@ const routes = [
     path: '/svgIcon',
     name: 'svg图标使用',
     component: SvgIcon
+  },
+  {
+    path: '/drop',
+    name: '下拉选项卡',
+    component: Drop
   },
   {
     path: '/other',
