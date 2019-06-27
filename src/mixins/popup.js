@@ -1,6 +1,6 @@
 import PopupManager from '@/utils/popupManager'
 let popid = 1
-export default{
+export default {
   props: {
     visible: {
       type: Boolean,

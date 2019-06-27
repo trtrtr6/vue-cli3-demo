@@ -1,7 +1,8 @@
 <template>
   <div class="pk-wrapper">
     <div class="pk-box">
-      <div class="box-main" :class="{'shake': !animationend}" ref="shakeBox" v-if="selected && selected != 0" @click="shake">
+      <div class="box-main" :class="{'shake': !animationend}" ref="shakeBox" v-if="selected && selected != 0"
+        @click="shake">
         <div class="row" :class="{'full-left': leftWidth=='100%', 'full-right': leftWidth=='0%'}">
           <div class="pk-item pk-left" :style="{'width':leftWidth}">
             <transition name="process">
@@ -9,7 +10,8 @@
             </transition>
             <div class="row middle-xs center-xs pk-info">
               <div>
-                <countTo :startVal='0' :endVal='leftEndVal' :easingFn="easeInOutQuad" :duration='duration' suffix="%" @callback="countToEndCb"></countTo>
+                <countTo :startVal='0' :endVal='leftEndVal' :easingFn="easeInOutQuad" :duration='duration'
+                  suffix="%" @callback="countToEndCb"></countTo>
                 <p>{{selected == 1 && `已选择“${leftInfoTitle}”` || leftInfoTitle}}</p>
               </div>
             </div>
@@ -22,7 +24,8 @@
             </div>
             <div class="row middle-xs center-xs pk-info">
               <div>
-                <countTo :startVal='0' :endVal='rightEndVal' :easingFn="easeInOutQuad" :duration='duration' suffix="%"></countTo>
+                <countTo :startVal='0' :endVal='rightEndVal' :easingFn="easeInOutQuad" :duration='duration'
+                  suffix="%"></countTo>
                 <p>{{selected == 2 && `已选择“${rightInfoTitle}”` || rightInfoTitle}}</p>
               </div>
             </div>
@@ -30,11 +33,11 @@
         </div>
       </div>
       <div class="row box-select" v-else>
-        <div class="col-xs pk-select-item select-left" @click="pkSelect(1, leftInfo.id)" >
+        <div class="col-xs pk-select-item select-left" @click="pkSelect(1, leftInfo.id)">
           {{leftInfoTitle}}
         </div>
         <div class="pk-vs"></div>
-        <div class="col-xs pk-select-item select-right" @click="pkSelect(2, rightInfo.id)" >
+        <div class="col-xs pk-select-item select-right" @click="pkSelect(2, rightInfo.id)">
           {{rightInfoTitle}}
         </div>
       </div>
@@ -45,98 +48,98 @@
 import countTo from 'vue-count-to'
 import { Debounce } from '@/utils/commonUtils'
 export default {
-  props:{
-    pkInfo:{
+  props: {
+    pkInfo: {
       type: Array,
       default: null
     },
-    selected:{
+    selected: {
       type: [Number, String],
       default: 0
     }
   },
-  data(){
+  data () {
     return {
-      isShow:false,
-      duration:3000,
-      leftEndVal:0,
-      rightEndVal:0,
-      leftWidth:'50%',
-      countToEnd:false,
+      isShow: false,
+      duration: 3000,
+      leftEndVal: 0,
+      rightEndVal: 0,
+      leftWidth: '50%',
+      countToEnd: false,
       animationend: true
     }
   },
-  computed:{
-    leftInfo(){
+  computed: {
+    leftInfo () {
       const { pkInfo } = this
       return pkInfo && pkInfo[0]
     },
-    rightInfo(){
+    rightInfo () {
       const { pkInfo } = this
       return pkInfo && pkInfo[1]
     },
-    leftInfoTitle(){
-      return this.leftInfo && this.leftInfo.title || ''
+    leftInfoTitle () {
+      return (this.leftInfo && this.leftInfo.title) || ''
     },
-    rightInfoTitle(){
-      const { pkInfo } = this
-      return this.rightInfo && this.rightInfo.title || ''
-    },
+    rightInfoTitle () {
+      return (this.rightInfo && this.rightInfo.title) || ''
+    }
   },
-  components:{
+  components: {
     countTo
   },
-  methods:{
-    easeInOutQuad(t, b, c, d) {
-      if ((t/=d/2) < 1) return c/2*t*t + b;
-	    return -c/2 * ((--t)*(t-2) - 1) + b;
+  methods: {
+    easeInOutQuad (t, b, c, d) {
+      if ((t /= d / 2) < 1) return c / 2 * t * t + b
+      return -c / 2 * ((--t) * (t - 2) - 1) + b
     },
-    pkBoxInit(){
-      const {pkInfo} = this
+    pkBoxInit () {
+      const { pkInfo } = this
       this.isShow = true
-      if(pkInfo && pkInfo.length>0){
+      if (pkInfo && pkInfo.length > 0) {
         const left = this.leftInfo.value
         const right = this.rightInfo.value
-        this.leftWidth = left+'%'
+        this.leftWidth = left + '%'
         this.leftEndVal = parseInt(left)
         this.rightEndVal = parseInt(right)
       }
     },
-    pkSelect(val, id){
-      this.$emit('pkSelect',val, id)
+    pkSelect (val, id) {
+      this.$emit('pkSelect', val, id)
     },
-    countToEndCb(){
+    countToEndCb () {
       this.countToEnd = true
     },
-    shake(){
-      if(!this.countToEnd){
+    shake () {
+      if (!this.countToEnd) {
         return false
       }
-      if(!this.animationend){
+      if (!this.animationend) {
         return false
       }
       this.animationend = false
       this.showToast()
       const _this = this
-      this.$refs.shakeBox.addEventListener('animationend', function fn(e){
+      this.$refs.shakeBox.addEventListener('animationend', function fn (e) {
         _this.animationend = true
-        e.target.removeEventListener('animationend', fn);
+        e.target.removeEventListener('animationend', fn)
       })
     },
     showToast: Debounce(function () {
       this.$emit('shakeToast')
     }, 900)
   },
-  watch:{
-    selected(val){
-      if(val && val != 0){
-        this.$nextTick(()=>{
+  watch: {
+    selected (val) {
+      // eslint-disable-next-line eqeqeq
+      if (val && val != 0) {
+        this.$nextTick(() => {
           this.pkBoxInit()
         })
       }
     }
   }
-};
+}
 </script>
 <style lang="less">
 .pk-wrapper {
@@ -149,11 +152,11 @@ export default {
     padding-right: 0;
   }
   .pk-box {
-    .box-main{
+    .box-main {
       border-radius: 60px;
       height: 125px;
       overflow: hidden;
-      &>.row{
+      & > .row {
         margin-left: -6px;
         margin-right: -6px;
       }
@@ -167,13 +170,13 @@ export default {
           bottom: 0;
           right: 0;
           left: 0;
-          color: #FFFCFC;
+          color: #fffcfc;
           text-align: center;
           font-size: 40px;
           line-height: 46px;
           transform: skewX(15deg);
-          p{
-            font-size:24px;
+          p {
+            font-size: 24px;
             line-height: 33px;
           }
         }
@@ -181,7 +184,7 @@ export default {
           width: 60%;
           padding-right: 9px;
           .bg-box {
-            background: #FF484A;
+            background: #ff484a;
           }
         }
         .bg-box {
@@ -189,8 +192,8 @@ export default {
           width: 100%;
           border-radius: 9px;
         }
-        .process-enter{
-          width:0;
+        .process-enter {
+          width: 0;
         }
         .process-enter-active {
           transition: all 2s ease-out;
@@ -198,51 +201,51 @@ export default {
         &.pk-right {
           padding-left: 9px;
           .bg-box {
-            background: #2674FF;
+            background: #2674ff;
           }
         }
       }
-      .full-left{
-        .pk-left{
-          padding-right:0
+      .full-left {
+        .pk-left {
+          padding-right: 0;
         }
-        .pk-right{
-          display:none
+        .pk-right {
+          display: none;
         }
       }
-      .full-right{
+      .full-right {
         .pk-right {
           padding-left: 0;
         }
-        .pk-left{
-          display:none
+        .pk-left {
+          display: none;
         }
       }
     }
-    .box-select{
-      .pk-vs{
-        width:102px;
-        height:123px;
+    .box-select {
+      .pk-vs {
+        width: 102px;
+        height: 123px;
         // background: url('../image/icon-vs.png') no-repeat;
         // background-position: 0 10px;
         // background-size: contain;
-        padding:0 9px;
+        padding: 0 9px;
       }
-      .pk-select-item{
-        height:123px;
-        border-radius:11px;
-        width:84px;
+      .pk-select-item {
+        height: 123px;
+        border-radius: 11px;
+        width: 84px;
         line-height: 123px;
         font-size: 40px;
-        color:#fff;
+        color: #fff;
         text-align: center;
-        &.select-left{
-          background: rgba(255,71,73,1);
-          box-shadow:0px 7px 11px 0px rgba(250,25,27,0.3);
+        &.select-left {
+          background: rgba(255, 71, 73, 1);
+          box-shadow: 0px 7px 11px 0px rgba(250, 25, 27, 0.3);
         }
-        &.select-right{
-          background:rgba(38,116,255,1);
-          box-shadow:0px 7px 11px 0px rgba(38,69,255,0.26);
+        &.select-right {
+          background: rgba(38, 116, 255, 1);
+          box-shadow: 0px 7px 11px 0px rgba(38, 69, 255, 0.26);
         }
       }
     }
@@ -254,18 +257,18 @@ export default {
     }
     10%,
     40%,
-    70%{
+    70% {
       transform: translate3d(-10px, 0, 0);
     }
 
     20%,
     50%,
-    80%{
+    80% {
       transform: translate3d(10px, 0, 0);
     }
   }
   .shake {
-    animation-duration: .6s;
+    animation-duration: 0.6s;
     animation-fill-mode: both;
     animation-name: shake;
   }

@@ -3,24 +3,24 @@
     <h1>各种双向绑定实现，父子组件件绑定，实例全部采用render渲染函数（并且包含jsx语法）</h1>
     <div>
       <h1>.sync双向绑定</h1>
-      <aa class="abc" :snycTest.sync="test" ></aa>
-        {{'外面的值：' + test}}
+      <aa class="abc" :snycTest.sync="test"></aa>
+      {{'外面的值：' + test}}
       <button @click="fn">
         外面改变里面
       </button>
     </div>
     <div>
       <h1>v-model双向绑定方法一</h1>
-      <bb class="abc" v-model="test" ></bb>
-        {{'外面的值：' + test}}
+      <bb class="abc" v-model="test"></bb>
+      {{'外面的值：' + test}}
       <button @click="fn">
         外面改变里面
       </button>
     </div>
     <div>
       <h1>v-model双向绑定方法二</h1>
-      <bb class="abc" v-model="test" ></bb>
-        {{'外面的值：' + test}}
+      <cc class="abc" v-model="test"></cc>
+      {{'外面的值：' + test}}
       <button @click="fn">
         外面改变里面
       </button>
@@ -133,17 +133,17 @@ export default {
 }
 </script>
 <style scoped>
-button{
-  padding:3px 9px;
-  background:#000;
-  color:#fff;
+button {
+  padding: 3px 9px;
+  background: #000;
+  color: #fff;
   border-radius: 8px;
 }
 </style>
 <style>
-button.btn{
-  padding:3px 9px;
-  color:#000;
+button.btn {
+  padding: 3px 9px;
+  color: #000;
   border-radius: 8px;
 }
 </style>

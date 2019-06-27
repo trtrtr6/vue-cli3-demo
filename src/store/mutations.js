@@ -1,4 +1,4 @@
-import {setSessionStore, removeSessionStore} from '../utils/commonUtils'
+import { setSessionStore, removeSessionStore } from '../utils/commonUtils'
 import { LOGIN, LOGOUT } from './mutation-types.js'
 export default {
   [LOGIN] (state, adminInfo) {

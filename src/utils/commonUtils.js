@@ -203,9 +203,9 @@ export const Throttle = (fn, t = 500) => {
  * 获取当前设备下的px值，
  * 主要用于canvas及各种无法设置rem的情况，手动计算适配各种设备
  * （依赖于flexible.js）
- * @param {*} px 
+ * @param {*} px
  * @param {*} rem 默认75
  */
 export const getCurrentPx = (px, rem = 75) => {
-  return parseFloat(document.documentElement.style.fontSize)*px/rem
+  return parseFloat(document.documentElement.style.fontSize) * px / rem
 }
