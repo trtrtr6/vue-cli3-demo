@@ -6,6 +6,16 @@
 </template>
 <script>
 import Person from '@/bo/personBo'
+import _ from 'lodash'
+const users = [
+  { 'user': 'barney', 'age': 36, 'active': true },
+  { 'user': 'fred', 'age': 40, 'active': false }
+]
+
+// The `_.matches` iteratee shorthand.
+const aa = _.filter(users, _.iteratee(['age', 36]))
+// => [{ 'user': 'barney', 'age': 36, 'active': true }]
+console.log('======', aa)
 export default {
   data () {
     return {
