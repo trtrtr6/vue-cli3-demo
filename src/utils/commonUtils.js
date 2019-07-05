@@ -26,7 +26,7 @@ export const removeStore = name => {
 }
 
 /**
- * 存储sessonStorage
+ * 存储sessionStorage
  */
 export const setSessionStore = (name, content) => {
   if (!name) return
@@ -72,7 +72,7 @@ export const browser = {
       weixin: u.indexOf('MicroMessenger') > -1, // 是否微信 （2015-01-22新增）
       qq: u.match(/\sQQ/i) === ' qq' // 是否QQ
     }
-  }()),
+  })(),
   language: (navigator.browserLanguage || navigator.language).toLowerCase()
 }
 /**
@@ -101,7 +101,8 @@ export default {
   pick (o, ...props) {
     let keys = typeof props[0] === 'object' ? props[0] : props
     return keys.reduce((a, x) => {
-      if (o && o.hasOwnProperty(x)) { // 也可使用 (x in o)
+      if (o && o.hasOwnProperty(x)) {
+        // 也可使用 (x in o)
         a[x] = o[x]
       }
       return a
@@ -128,7 +129,8 @@ export default {
   omit (o, ...props) {
     let keys = typeof props[0] === 'object' ? props[0] : props
     return keys.reduce((a, x) => {
-      if (o && !o.hasOwnProperty(x)) { // 也可使用 (x in o)
+      if (o && !o.hasOwnProperty(x)) {
+        // 也可使用 (x in o)
         a[x] = o[x]
       }
       return a
@@ -199,6 +201,7 @@ export const Throttle = (fn, t = 500) => {
     }
   }
 }
+
 /**
  * 获取当前设备下的px值，
  * 主要用于canvas及各种无法设置rem的情况，手动计算适配各种设备
@@ -207,5 +210,18 @@ export const Throttle = (fn, t = 500) => {
  * @param {*} rem 默认75
  */
 export const getCurrentPx = (px, rem = 75) => {
-  return parseFloat(document.documentElement.style.fontSize) * px / rem
+  return (parseFloat(document.documentElement.style.fontSize) * px) / rem
+}
+
+/**
+ * 获取url中的参数
+ */
+export const getUrlKey = () => {
+  return (
+    decodeURIComponent(
+      (new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(
+        location.href
+      ) || ['', ''])[1].replace(/\+/g, '%20')
+    ) || null
+  )
 }
