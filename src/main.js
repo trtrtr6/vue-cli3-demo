@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import './style/reset.css' // 不需要了，下面引用的框架里面自带基础reset样式
 import 'lib-flexible'
+import '@/assets/js/android-1px'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import ElementUI from 'element-ui'

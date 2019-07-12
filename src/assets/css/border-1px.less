@@ -1,0 +1,250 @@
+@border-default-color: #dcdcdc;
+@border-default-style: solid;
+@border-default-width: 1px;
+@border-default-radius: 10px;
+._pixel-ratio-all(@ratio, @color, @width, @style, @radius ,@el, @isCommon:false)
+  when
+  (@isCommon = false) {
+  html.pixel-ratio-@{ratio} & {
+    border: none;
+    position: relative;
+    &:@{el} {
+      content: '';
+      width: @ratio*100%;
+      height: @ratio*100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: @width @style @color; /*no*/
+      border-radius: @radius* @ratio;
+      transform: scale(1 / @ratio);
+      transform-origin: 0 0;
+      padding: 1px;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+  }
+}
+._pixel-ratio-all(@ratio, @color, @width, @style, @radius, @el, @isCommon:false)
+  when
+  (@isCommon = true) {
+  position: relative;
+  &:@{el} {
+    content: '';
+    width: @ratio*100%;
+    height: @ratio*100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: @width @style @color; /*no*/
+    border-radius: @radius* @ratio;
+    transform: scale(1 / @ratio);
+    transform-origin: 0 0;
+    padding: 1px;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+}
+._pixel-ratio(@ratio, @position, @color, @width, @style, @el, @isCommon:false)
+  when
+  (@isCommon = false) {
+  html.pixel-ratio-@{ratio} & {
+    border: none;
+    position: relative;
+    &:@{el} {
+      content: '';
+      position: absolute;
+      left: if((@position = right), auto, 0);
+      top: if((@position = bottom), auto, 0);
+      bottom: if((@position = top), auto, 0);
+      right: if((@position = left), auto, 0);
+      height: if((@position = right) or (@position = left), 100%, auto); /*no*/
+      width: if((@position = top) or (@position = bottom), 100%, auto); /*no*/
+      border-@{position}: @width @style @color; /*no*/
+      box-sizing: border-box;
+      transform-origin: if(
+        (@position = right) or (@position = bottom),
+        right bottom,
+        left top
+      );
+      transform: if(
+        (@position = right) or (@position = left),
+        scaleX(1 / @ratio),
+        scaleY(1 / @ratio)
+      );
+    }
+  }
+}
+._pixel-ratio(@ratio, @position, @color, @width, @style, @el, @isCommon:false)
+  when
+  (@isCommon = true) {
+  position: relative;
+  &:@{el} {
+    content: '';
+    position: absolute;
+    left: if((@position = right), auto, 0);
+    top: if((@position = bottom), auto, 0);
+    bottom: if((@position = top), auto, 0);
+    right: if((@position = left), auto, 0);
+    height: if((@position = right) or (@position = left), 100%, auto); /*no*/
+    width: if((@position = top) or (@position = bottom), 100%, auto); /*no*/
+    border-@{position}: @width @style @color; /*no*/
+    box-sizing: border-box;
+    transform-origin: if(
+      (@position = right) or (@position = bottom),
+      right bottom,
+      left top
+    );
+    transform: if(
+      (@position = right) or (@position = left),
+      scaleX(1 / @ratio),
+      scaleY(1 / @ratio)
+    );
+  }
+}
+
+._ratio-common (@color, @width, @style, @radius, @el) {
+  ._pixel-ratio-all(
+    @ratio:2,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @radius: @radius,
+    @el: @el
+  );
+  ._pixel-ratio-all(
+    @ratio:3,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @radius: @radius,
+    @el: @el
+  );
+}
+._s-ratio-common (@position, @color, @width, @style, @el) {
+  ._pixel-ratio(
+    @ratio:2,
+    @position: @position,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el
+  );
+  ._pixel-ratio(
+    @ratio:3,
+    @position: @position,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el
+  );
+}
+
+/* ==========andriod边框1px处理========= */
+/* 全边框 */
+.ad-border(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @radius:@border-default-radius, @el:before ) {
+  ._ratio-common(
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @radius: @radius,
+    @el: @el
+  );
+}
+/* 上下左右单边框 */
+.ad-border-top(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @el:before) {
+  ._s-ratio-common(
+    @position:top,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el
+  );
+}
+.ad-border-bottom(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @el:before) {
+  ._s-ratio-common(
+    @position:bottom,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el
+  );
+}
+.ad-border-left(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @el:before) {
+  ._s-ratio-common(
+    @position:left,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el
+  );
+}
+.ad-border-right(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @el:before) {
+  ._s-ratio-common(
+    @position:right,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el
+  );
+}
+
+/* =========通用的1px处理========== */
+/* 全边框 */
+.co-border(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @radius:@border-default-radius, @el:before ) {
+  ._pixel-ratio-all(
+    @ratio:2,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @radius: @radius,
+    @el: @el,
+    @isCommon: true
+  );
+}
+
+/* 上下左右单边框 */
+.co-border-top(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @el:before) {
+  ._pixel-ratio(
+    @ratio:2,
+    @position: top,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el,
+    @isCommon: true
+  );
+}
+.co-border-bottom(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @el:before) {
+  ._pixel-ratio(
+    @ratio:2,
+    @position: bottom,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el,
+    @isCommon: true
+  );
+}
+.co-border-left(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @el:before) {
+  ._pixel-ratio(
+    @ratio:2,
+    @position: left,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el,
+    @isCommon: true
+  );
+}
+.co-border-right(@color:@border-default-color, @width:@border-default-width, @style:@border-default-style, @el:before) {
+  ._pixel-ratio(
+    @ratio:2,
+    @position: right,
+    @color: @color,
+    @width: @width,
+    @style: @style,
+    @el: @el,
+    @isCommon: true
+  );
+}
