@@ -225,3 +225,22 @@ export const getUrlKey = () => {
     ) || null
   )
 }
+
+export const apiUrlDeal = (apiName, ...params) => {
+  let apis = apiName.split(' ')
+  let type = apis[0]
+  const urlSplit = apis[1].split(/:[^/]+/)
+
+  let url = ''
+
+  params = params.slice(0)
+
+  urlSplit.forEach((item, index) => {
+    let param = params[index] || ''
+    url = url + item + param
+  })
+  return {
+    type: type,
+    url: url
+  }
+}

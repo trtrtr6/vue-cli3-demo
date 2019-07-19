@@ -28,6 +28,7 @@ const PkCompView = () => import(/* webpackChunkName: "pkCompView" */ '@/views/pk
 const SvgIcon = () => import(/* webpackChunkName: "svgIcon" */ '@/views/svgIcon.vue')
 const Drop = () => import(/* webpackChunkName: "drop" */ '@/views/drop.vue')
 const Android1px = () => import(/* webpackChunkName: "android1px" */ '@/views/android1px.vue')
+const TabBar = () => import(/* webpackChunkName: "tabBar" */ '@/views/tabBar.vue')
 
 const routes = [
   {
@@ -137,6 +138,11 @@ const routes = [
     path: '/android1px',
     name: 'flexible下安卓1px处理方案',
     component: Android1px
+  },
+  {
+    path: '/tabBar',
+    name: '测试一下',
+    component: TabBar
   },
   {
     path: '/other',
