@@ -16,10 +16,6 @@ import { addClass } from '@/utils/dom'
 export default {
   name: 'slide',
   props: {
-    index: {
-      type: Number,
-      default: 0
-    },
     loop: {
       type: Boolean,
       default: true
@@ -47,10 +43,6 @@ export default {
     speed: {
       type: Number,
       default: 400
-    },
-    stopPropagation: {
-      type: Boolean,
-      default: true
     }
   },
   data () {
@@ -129,7 +121,6 @@ export default {
         this._initDots()
       }
       this._initSlide()
-      this.slide.goToPage(this.index, 0, 0)
       if (this.autoPlay) {
         this._play()
       }
@@ -162,20 +153,20 @@ export default {
           speed: this.speed
         },
         bounce: false,
-        stopPropagation: this.stopPropagation,
         click: this.click
-        // eventPassthrough: 'vertical'
       })
       this.slide.on('scroll', this._onScroll)
       this.slide.on('scrollEnd', this._onScrollEnd)
 
       this.slide.on('touchEnd', () => {
+        this.$emit('touchEnd')
         if (this.autoPlay) {
           this._play()
         }
       })
 
       this.slide.on('beforeScrollStart', () => {
+        this.$emit('beforeScrollStart')
         if (this.autoPlay) {
           clearTimeout(this.timer)
         }
@@ -215,9 +206,6 @@ export default {
       this.update()
     },
     threshold () {
-      this.update()
-    },
-    stopPropagation () {
       this.update()
     }
   }

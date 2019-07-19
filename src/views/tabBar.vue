@@ -1,6 +1,8 @@
 <template>
   <div class="wrapper">
-    <b-scroll ref="bscroll" @scroll="bscroll" :listenScroll="true" :probeType="3" :bounce="false">
+    <b-scroll ref="bscroll" @scroll="bscroll" :listenScroll="true" @touchEnd="btouchEnd"
+      :listenBeforeScroll="true" @beforeScrollStart="bbeforeScrollStart" :probeType="3"
+      :bounce="false">
       <div>
         <p>测试类容测试类容测试类容测试类容测试类容</p>
         <p>测试类容测试类容测试类容测试类容测试类容</p>
@@ -48,12 +50,13 @@
       </div>
       <div class="swiper-wrapper" id="swiper-wrapper" ref="swiper-wrapper">
         <b-slide ref="slide" :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot"
-          :interval="interval" :threshold="threshold" :speed="speed" @scroll="scroll" :index="index"
-          :stopPropagation="stopPropagation" @change="change">
+          :interval="interval" :threshold="threshold" :speed="speed" @scroll="scroll"
+          @change="change" @touchEnd="touchEnd" @beforeScrollStart="beforeScrollStart">
           <div v-for="(item,index) in data" :key="index" class="tab-slide" @click="test($event)">
-            <b-scroll ref="scroll" :bounce="false" :listenScroll="true" :probeType="3"
-              @topScroll="topScroll" :listenTop="true">
-              <div v-if="index === 1">
+            <b-scroll ref="scroll" :bounce="false" :listenScroll="true" :listenScrollEnd="true"
+              @scroll="innerScroll" :listenBeforeScroll="true" @scrollEnd="scrollEnd" :probeType="3"
+              @topScroll="topScroll">
+              <div v-if="index === 0 || index === 1">
                 <img :src="item.picUrl">
                 <img :src="item.picUrl">
                 <img :src="item.picUrl">
@@ -89,14 +92,11 @@ export default {
   data () {
     return {
       position: 0,
-      top: false,
-      index: 0,
       turnToPrev: false,
       turnToNext: false,
       isAutoPlay: false,
       isLoop: false,
       isShowDot: false,
-      stopPropagation: false,
       speed: 400,
       threshold: 0.3,
       interval: 4000,
@@ -106,9 +106,6 @@ export default {
         },
         {
           picUrl: 'http://y.gtimg.cn/music/photo_new/T003R720x288M000001s0BXx3Zxcwb.jpg'
-        },
-        {
-          picUrl: 'http://y.gtimg.cn/music/photo_new/T003R720x288M000002cwng4353HKz.jpg'
         }
       ]
     }
@@ -118,39 +115,10 @@ export default {
     bScroll
   },
   mounted () {
-    document.addEventListener('touchmove', (e) => {
-      if (document.getElementById('swiper-wrapper').contains(e.target)) {
-        console.log(this.stopPropagation, this.top)
-        if ((this.stopPropagation && this.top) || this.first) {
-          const touch = e.touches[0]
-          if (this.startY) {
-            const dix = touch.clientY - this.startY
-            const dir = this.getSlideDirection(this.startX, this.startY, touch.clientX, touch.clientY)
-            if (dir === 2) {
-              console.log('====', dix)
-              this.first = true
-              // this.$refs.bscroll.scrollTo(0, dix - this.position, 0)
-            }
-          } else {
-            this.startY = touch.clientY
-            this.startX = touch.clientX
-          }
-        } else {
-          this.startY = null
-          this.startX = null
-        }
-      }
-    })
-    document.addEventListener('touchend', (e) => {
-      this.startY = null
-      this.first = false
-    })
     this.position = this.$refs.bar.getBoundingClientRect().top
     this.$nextTick(() => {
       setTimeout(() => {
-        this.$refs.scroll.forEach((item) => {
-          item.disable()
-        })
+        this.disableInner()
       }, 20)
     })
   },
@@ -162,9 +130,26 @@ export default {
       const deltaX = x / slideScrollerWidth * tabItemWidth
       this.setSliderTransform(deltaX)
     },
+    touchEnd () {
+      console.log('===', 'touchEnd')
+      this.$refs.scroll.forEach((item) => {
+        item.enable()
+      })
+      this.$refs.bscroll.enable()
+    },
+    beforeScrollStart () {
+      console.log('===', 'beforeScrollStart', this.$refs.slide.slide)
+      if (this.$refs.slide.slide.movingDirectionX) {
+        this.$refs.scroll.forEach((item) => {
+          item.disable()
+        })
+        this.$refs.bscroll.disable()
+      }
+    },
     change (index) {
       this.index = index
       console.log('当前index', index)
+      this.disableInner()
     },
     setSliderTransform (offset) {
       const slider = this.$refs.barSlider
@@ -172,7 +157,6 @@ export default {
         offset = `${offset}px`
       }
       if (slider) {
-        // slider.style.transition = `transform 0.2s linear`
         slider.style.transform = `translateX(${offset}) translateZ(0)`
       }
     },
@@ -183,52 +167,49 @@ export default {
       console.log(e)
     },
     bscroll (pos) {
-      if (Math.abs(pos.y) >= this.position) {
-        this.stopPropagation = true
-        this.$refs.scroll.forEach((item) => {
-          item.enable()
-        })
-      } else {
-        this.stopPropagation = false
+      this.disableInner()
+    },
+    bbeforeScrollStart () {
+      if (this.$refs.bscroll.scroll.movingDirectionY) {
         this.$refs.scroll.forEach((item) => {
           item.disable()
         })
+        this.$refs.slide.slide.disable()
+      }
+    },
+    btouchEnd () {
+      this.$refs.scroll.forEach((item) => {
+        item.enable()
+      })
+      this.$refs.slide.slide.enable()
+    },
+    disableInner () {
+      const y = this.$refs.bscroll.scroll.y
+      const index = this.index || 0
+      const scrolls = this.$refs.scroll
+      scrolls.forEach((item) => {
+        if (!item.scroll.enabled) scrolls[index].enable()
+      })
+      if (Math.abs(y) < this.position) {
+        if (scrolls[index].scroll.enable) scrolls[index].disable()
+      } else {
+        this.$refs.slide.slide.enable()
       }
     },
     topScroll (flag) {
-      console.log(flag)
-      this.top = flag
-    },
-    // 返回角度
-    getSlideAngle (dx, dy) {
-      return Math.atan2(dy, dx) * 180 / Math.PI
-    },
-
-    // 根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
-    getSlideDirection (startX, startY, endX, endY) {
-      var dy = startY - endY
-      var dx = endX - startX
-      var result = 0
-
-      // 如果滑动距离太短
-      if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
-        return result
+      if (flag) {
+        this.$refs.bscroll.enable()
+      } else {
+        const top = this.$refs.bar.getBoundingClientRect().top
+        if (top <= 0) this.$refs.bscroll.disable()
       }
-
-      var angle = this.getSlideAngle(dx, dy)
-      if (angle >= -45 && angle < 45) {
-        result = 4
-      } else if (angle >= 45 && angle < 135) {
-        result = 1
-      } else if (angle >= -135 && angle < -45) {
-        result = 2
-      } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-        result = 3
-      }
-
-      return result
+    },
+    scrollEnd () {
+      this.$refs.bscroll.enable()
+    },
+    innerScroll (pos) {
+      console.log('===', pos)
     }
-
   }
 }
 </script>

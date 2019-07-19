@@ -113,9 +113,6 @@ export default {
     },
     zoom: {
       default: false
-    },
-    listenTop: {
-      default: false
     }
   },
   data () {
@@ -132,9 +129,7 @@ export default {
   computed: {
     pullUpTxt () {
       const moreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more
-
       const noMoreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore
-
       return this.pullUpDirty ? moreTxt : noMoreTxt
     },
     refreshTxt () {
@@ -180,20 +175,17 @@ export default {
       if (this.listenScroll) {
         this.scroll.on('scroll', (pos) => {
           this.$emit('scroll', pos)
-          if (this.listenTop) {
-            console.log(this.scroll.movingDirectionY, pos.y)
-            if (this.scroll.movingDirectionY !== 1 && pos.y === 0) {
-              this.$emit('topScroll', true)
-            } else {
-              this.$emit('topScroll', false)
-            }
+          if (this.scroll.movingDirectionY !== 1 && this.scroll.y === 0) {
+            this.$emit('topScroll', pos)
+          } else {
+            this.$emit('topScroll', false)
           }
         })
       }
 
       if (this.listenScrollEnd) {
         this.scroll.on('scrollEnd', (pos) => {
-          this.$emit('scroll-end', pos)
+          this.$emit('scrollEnd', pos)
         })
       }
 
@@ -203,7 +195,7 @@ export default {
         })
 
         this.scroll.on('scrollStart', () => {
-          this.$emit('scroll-start')
+          this.$emit('scrollStart')
         })
       }
 
