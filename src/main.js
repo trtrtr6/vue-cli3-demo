@@ -16,6 +16,9 @@ import TestApi from '@/api/test'
 import VueWorker from 'vue-worker'
 import './assets/icons/index'
 
+import xToast from '@/components/toast'
+import xDialog from '@/components/dialog'
+
 Vue.config.productionTip = false
 
 Vue.use(VueLodash)
@@ -24,6 +27,9 @@ Vue.use(ElementUI)
 
 Vue.use(TestApi)
 Vue.use(VueWorker)
+
+Vue.use(xToast)
+Vue.use(xDialog)
 
 console.log(process.env.NODE_ENV)
 console.log(process.env.VUE_APP_TITLE)

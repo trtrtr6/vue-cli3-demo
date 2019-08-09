@@ -1,365 +1,266 @@
 <template>
-  <div ref="wrapper" class="list-wrapper">
-    <div class="scroll-content">
-      <div ref="listWrapper">
-        <slot>
-          <ul class="list-content">
-            <li @click="clickItem($event,item)" class="list-item" v-for="(item, index) in data"
-              :key="index">{{item}}</li>
-          </ul>
-        </slot>
-      </div>
-      <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullUpLoad="isPullUpLoad">
-        <div class="pullup-wrapper" v-if="pullUpLoad">
-          <div class="before-trigger" v-if="!isPullUpLoad">
-            <span>{{pullUpTxt}}</span>
-          </div>
-          <div class="after-trigger" v-else>
-            <loading></loading>
-          </div>
+  <div ref="wrapper" class="x-scroll-wrapper">
+    <div class="x-scroll-content">
+      <div class="x-scroll-list-wrapper">
+        <slot></slot>
+        <div v-if="pullUpLoad" class="x-pullup" ref="pullup">
+          <slot name="pullUp" :pullUpTxt="pullUpTxt" :isLoading="isLoading">
+            <div class="x-pullup-load-wrap">
+              <div class="x-loading" v-if="isLoading">
+                正在加载...
+              </div>
+              <div class="x-unloading" v-else>
+                {{pullUpTxt}}
+              </div>
+            </div>
+          </slot>
         </div>
-      </slot>
+      </div>
     </div>
-    <slot name="pulldown" :pullDownRefresh="pullDownRefresh" :pullDownStyle="pullDownStyle"
-      :beforePullDown="beforePullDown" :isPullingDown="isPullingDown" :bubbleY="bubbleY">
-      <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
-        <div class="before-trigger" v-if="beforePullDown">
-          <bubble :y="bubbleY"></bubble>
-        </div>
-        <div class="after-trigger" v-else>
-          <div v-if="isPullingDown" class="loading">
-            <loading></loading>
-          </div>
-          <div v-else><span>{{refreshTxt}}</span></div>
-        </div>
-      </div>
-    </slot>
   </div>
 </template>
-
 <script>
 import BScroll from 'better-scroll'
-import Loading from './loading.vue'
-import Bubble from './bubble.vue'
-import { getRect } from '@/utils/dom'
-
-const COMPONENT_NAME = 'scroll'
-const DIRECTION_H = 'horizontal'
-const DIRECTION_V = 'vertical'
-
+const DEFAULT_OPTIONS = {
+  observeDOM: true,
+  click: true,
+  probeType: 3,
+  scrollbar: false,
+  pullDownRefresh: false,
+  pullUpLoad: false,
+  bounce: false
+}
+const SCROLL_EVENTS = ['scroll', 'beforeScrollStart', 'scrollEnd']
+const PULLUP_STATUS_TXT = {
+  more: '加载更多',
+  noMore: '没有更多'
+}
 export default {
-  name: COMPONENT_NAME,
+  provide () {
+    return {
+      parentScroll: this
+    }
+  },
+  inject: {
+    parentScroll: {
+      default: null
+    }
+  },
   props: {
-    data: {
-      type: Array,
-      default: function () {
-        return []
+    pullUpProp: { // 上拉加载文字显示
+      default: null
+    },
+    option: { // betterScroll自定义option
+      type: Object,
+      default () {
+        return {}
       }
     },
-    probeType: {
-      type: Number,
-      default: 1
-    },
-    click: {
-      type: Boolean,
-      default: true
-    },
-    listenScroll: {
-      type: Boolean,
-      default: false
-    },
-    listenBeforeScroll: {
-      type: Boolean,
-      default: false
-    },
-    listenScrollEnd: {
-      type: Boolean,
-      default: false
-    },
-    direction: {
-      type: String,
-      default: DIRECTION_V
-    },
-    scrollbar: {
-      type: null,
-      default: false
-    },
-    pullDownRefresh: {
-      type: null,
-      default: false
-    },
-    pullUpLoad: {
-      type: null,
-      default: false
-    },
-    startY: {
-      type: Number,
-      default: 0
-    },
-    refreshDelay: {
-      type: Number,
-      default: 20
-    },
-    freeScroll: {
-      type: Boolean,
-      default: false
-    },
-    mouseWheel: {
-      type: Boolean,
-      default: false
-    },
-    bounce: {
-      default: true
-    },
-    zoom: {
-      default: false
+    scrollEvents: { // 对scroll实例添加事件监听[eventname]
+      type: Array,
+      default: () => [],
+      validator (arr) {
+        return arr.every((item) => {
+          return SCROLL_EVENTS.indexOf(item) !== -1
+        })
+      }
     }
   },
   data () {
     return {
-      beforePullDown: true,
-      isRebounding: false,
-      isPullingDown: false,
-      isPullUpLoad: false,
-      pullUpDirty: true,
-      pullDownStyle: '',
-      bubbleY: 0
+      isLoading: false,
+      isNoMore: false
     }
   },
   computed: {
-    pullUpTxt () {
-      const moreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more
-      const noMoreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore
-      return this.pullUpDirty ? moreTxt : noMoreTxt
+    finalScrollEvents () {
+      const finalScrollEvents = this.scrollEvents.slice()
+      if (!finalScrollEvents.length) {
+        this.listenScroll && finalScrollEvents.push('scroll')
+        this.listenBeforeScroll && finalScrollEvents.push('beforeScrollStart')
+      }
+      return finalScrollEvents
     },
-    refreshTxt () {
-      return this.pullDownRefresh && this.pullDownRefresh.txt
+    pullUpTxt () {
+      let text = Object.assign({}, PULLUP_STATUS_TXT, this.pullUpProp)
+      const { more, noMore } = text
+      return this.isNoMore ? noMore : more
+    },
+    pullUpLoad () {
+      return this.option.pullUpLoad
     }
-  },
-  created () {
-    this.pullDownInitTop = -50
   },
   mounted () {
     this.$nextTick(() => {
       this.initScroll()
     })
-  },
-  destroyed () {
-    this.$refs.scroll && this.$refs.scroll.destroy()
+    if (document.readyState === 'complete') {
+      this.refresh()
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        this.refresh()
+      }, false)
+    }
   },
   methods: {
     initScroll () {
-      if (!this.$refs.wrapper) {
-        return
-      }
-      if (this.$refs.listWrapper && (this.pullDownRefresh || this.pullUpLoad)) {
-        this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`
-      }
-
-      let options = {
-        probeType: this.probeType,
-        click: this.click,
-        scrollY: this.freeScroll || this.direction === DIRECTION_V,
-        scrollX: this.freeScroll || this.direction === DIRECTION_H,
-        scrollbar: this.scrollbar,
-        pullDownRefresh: this.pullDownRefresh,
-        pullUpLoad: this.pullUpLoad,
-        startY: this.startY,
-        freeScroll: this.freeScroll,
-        mouseWheel: this.mouseWheel,
-        bounce: this.bounce,
-        zoom: this.zoom
-      }
-
-      this.scroll = new BScroll(this.$refs.wrapper, options)
-      if (this.listenScroll) {
-        this.scroll.on('scroll', (pos) => {
-          this.$emit('scroll', pos)
-          if (this.scroll.movingDirectionY !== 1 && this.scroll.y === 0) {
-            this.$emit('topScroll', pos)
-          } else {
-            this.$emit('topScroll', false)
-          }
-        })
-      }
-
-      if (this.listenScrollEnd) {
-        this.scroll.on('scrollEnd', (pos) => {
-          this.$emit('scrollEnd', pos)
-        })
-      }
-
-      if (this.listenBeforeScroll) {
-        this.scroll.on('beforeScrollStart', () => {
-          this.$emit('beforeScrollStart')
-        })
-
-        this.scroll.on('scrollStart', () => {
-          this.$emit('scrollStart')
-        })
-      }
-
-      if (this.pullDownRefresh) {
-        this._initPullDownRefresh()
-      }
-
+      const wrapper = this.wrapper = this.$refs.wrapper
+      if (!wrapper) return
+      // 合并options
+      let options = Object.assign({}, DEFAULT_OPTIONS, {
+        scrollY: true,
+        scrollX: false
+      }, this.option)
+      this.scroll = new BScroll(wrapper, options)
+      this.parentScroll && this._handleNestScroll()
       if (this.pullUpLoad) {
         this._initPullUpLoad()
       }
+      this._listenScrollEvents()
     },
-    disable () {
-      this.scroll && this.scroll.disable()
-    },
-    enable () {
-      this.scroll && this.scroll.enable()
-    },
-    refresh () {
-      this.scroll && this.scroll.refresh()
-    },
-    scrollTo () {
-      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
-    },
-    autoPullDownRefresh () {
-      this.scroll && this.scroll.autoPullDownRefresh()
-    },
-    scrollToElement () {
-      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
-    },
-    clickItem (e, item) {
-      console.log(e)
-      this.$emit('click', item)
-    },
-    destroy () {
-      this.scroll.destroy()
-    },
-    forceUpdate (dirty) {
-      if (this.pullDownRefresh && this.isPullingDown) {
-        this.isPullingDown = false
-        this._reboundPullDown().then(() => {
-          this._afterPullDown()
+    _listenScrollEvents () {
+      this.finalScrollEvents.forEach((event) => {
+        this.scroll.on(event, (...args) => {
+          this.$emit(event, ...args)
         })
-      } else if (this.pullUpLoad && this.isPullUpLoad) {
-        this.isPullUpLoad = false
-        this.scroll.finishPullUp()
-        this.pullUpDirty = dirty
+      })
+    },
+    _checkReachBoundary (pos, scroll, option = {}) {
+      // 边界判断
+      // outerScroll: 判断是否往上滑到底
+      // innerScroll: 判断是否往下拉到底
+      // 反之不算越界，不移交scroll权限
+      const distY = scroll.distY
+      let reachBoundaryY
+      if (option.maxOnly) {
+        reachBoundaryY = distY < 0 ? pos.y <= scroll.maxScrollY : false
+      } else if (option.minOnly) {
+        reachBoundaryY = distY > 0 ? pos.y >= scroll.minScrollY : false
+      } else {
+        reachBoundaryY = distY > 0 ? pos.y >= scroll.minScrollY : distY < 0 ? pos.y <= scroll.maxScrollY : false
+      }
+      return reachBoundaryY
+    },
+    _handleNestScroll () {
+      this.$nextTick(() => {
+        const innerScroll = this.scroll
+        const outerScroll = this.parentScroll.scroll
+        const scrolls = [innerScroll, outerScroll]
+        scrolls.forEach((scroll, index, arr) => {
+          scroll.on('touchEnd', () => {
+            innerScroll.enable()
+            outerScroll.enable()
+            outerScroll.initiated = innerScroll.initiated = false
+          })
+          scroll.on('beforeScrollStart', () => {
+            const anotherScroll = arr[(index + 1) % 2]
+            anotherScroll.stop()
+            anotherScroll.resetPosition()
+          })
+        })
+        const onOutScrollHandle = (pos) => {
+          if (!outerScroll.initiated || outerScroll.isInTransition || outerScroll.movingDirectionY === 0 || !this.isVisible(innerScroll)) {
+            return
+          }
+          if (!innerScroll.hasVerticalScroll) {
+            !innerScroll.destroyed && innerScroll.destroy()
+            outerScroll.off('scroll', onOutScrollHandle)
+            return
+          }
+          const reachBoundary = this._checkReachBoundary(pos, outerScroll, { maxOnly: true })
+          // 下拉，out拉不动, inner有空间
+          const isInnerPass = outerScroll.movingDirectionY === -1 && pos.y >= 0 && innerScroll.y < 0
+          if (reachBoundary || isInnerPass) {
+            outerScroll.resetPosition()
+            outerScroll.disable()
+            innerScroll.pointX = outerScroll.pointX
+            innerScroll.pointY = outerScroll.pointY
+            innerScroll.enable()
+            innerScroll.off('scroll', this._innerScrollEvent)
+            innerScroll.on('scroll', this._innerScrollEvent)
+          } else {
+            innerScroll.disable()
+            innerScroll.off('scroll', this._innerScrollEvent)
+          }
+        }
+        outerScroll.on('scroll', onOutScrollHandle)
+        outerScroll.on('scrollEnd', () => {
+          // 解决第一次点击事件失效
+          outerScroll.isInTransition = false
+        })
+      })
+    },
+    _innerScrollEvent (pos) {
+      const innerScroll = this.scroll
+      const outerScroll = this.parentScroll.scroll
+      if (!innerScroll.initiated || innerScroll.isInTransition || innerScroll.movingDirectionY === 0) {
+        return
+      }
+      const reachBoundary = this._checkReachBoundary(pos, innerScroll, { minOnly: true })
+      // 上拉优先滑动outer, 判断out是否有滑动空间
+      const isOuterPass = innerScroll.movingDirectionY === 1 && outerScroll.y > outerScroll.maxScrollY
+      if (reachBoundary || isOuterPass) {
+        innerScroll.resetPosition()
+        innerScroll.disable()
+        outerScroll.pointX = innerScroll.pointX
+        outerScroll.pointY = innerScroll.pointY
+        outerScroll.enable()
+      } else {
+        outerScroll.disable()
+      }
+    },
+    _initPullUpLoad () {
+      this.scroll.on('pullingUp', () => {
+        this.isLoading = true
+        this.$emit('pullingUp')
+      })
+    },
+    forceUpdate (isNoMore) {
+      if (this.pullUpLoad && this.isLoading) {
+        this.isLoading = false
+        this.isNoMore = isNoMore
+        this.scroll.finishPullUp() // 数据已加载完毕
+        isNoMore && this.scroll.closePullUp()
         this.refresh()
       } else {
         this.refresh()
       }
     },
-    _initPullDownRefresh () {
-      this.scroll.on('pullingDown', () => {
-        this.beforePullDown = false
-        this.isPullingDown = true
-        this.$emit('pullingDown')
-      })
-
-      this.scroll.on('scroll', (pos) => {
-        if (!this.pullDownRefresh) {
-          return
-        }
-        if (this.beforePullDown) {
-          this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop)
-          this.pullDownStyle = `top:${Math.min(pos.y + this.pullDownInitTop, 10)}px`
-        } else {
-          this.bubbleY = 0
-        }
-
-        if (this.isRebounding) {
-          this.pullDownStyle = `top:${10 - (this.pullDownRefresh.stop - pos.y)}px`
-        }
-      })
+    isVisible (innerScroll) { // 当前scroll是否在屏幕内
+      let x = innerScroll.wrapper.getBoundingClientRect().left
+      return x >= 0 && x < this.scroll.wrapperWidth
     },
-    _initPullUpLoad () {
-      this.scroll.on('pullingUp', () => {
-        this.isPullUpLoad = true
-        this.$emit('pullingUp')
-      })
-    },
-    _reboundPullDown () {
-      const { stopTime = 600 } = this.pullDownRefresh
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          this.isRebounding = true
-          this.scroll.finishPullDown()
-          resolve()
-        }, stopTime)
-      })
-    },
-    _afterPullDown () {
-      setTimeout(() => {
-        this.pullDownStyle = `top:${this.pullDownInitTop}px`
-        this.beforePullDown = true
-        this.isRebounding = false
-        this.refresh()
-      }, this.scroll.options.bounceTime)
+    refresh () {
+      this.scroll && this.scroll.refresh()
     }
-  },
-  watch: {
-    data () {
-      setTimeout(() => {
-        this.forceUpdate(true)
-      }, this.refreshDelay)
-    }
-  },
-  components: {
-    Loading,
-    Bubble
   }
 }
 </script>
-
 <style lang="less">
-.list-wrapper {
+.x-scroll-wrapper {
   position: relative;
   height: 100%;
-  /* position: absolute */
-  /* left: 0 */
-  /* top: 0 */
-  /* right: 0 */
-  /* bottom: 0 */
   overflow: hidden;
-  background: #fff;
-
-  .scroll-content {
+  .x-scroll-content {
     position: relative;
     z-index: 1;
   }
-
-  .list-content {
-    position: relative;
-    z-index: 10;
-    background: #fff;
-
-    .list-item {
-      height: 60px;
-      line-height: 60px;
-      font-size: 18px;
-      padding-left: 20px;
-      border-bottom: 1px solid #e5e5e5;
+  .x-scroll-list-wrapper {
+    overflow: hidden;
+    .x-pullup {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .x-pullup-load-wrap {
+        height: 60px;
+        line-height: 60px;
+      }
+      .x-unloading,
+      .x-loading {
+        color: #aba6a6;
+      }
     }
   }
-}
-
-.pulldown-wrapper {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all;
-
-  .after-trigger {
-    margin-top: 10px;
-  }
-}
-
-.pullup-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px 0;
 }
 </style>

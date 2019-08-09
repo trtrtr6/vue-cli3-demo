@@ -28,7 +28,8 @@ const PkCompView = () => import(/* webpackChunkName: "pkCompView" */ '@/views/pk
 const SvgIcon = () => import(/* webpackChunkName: "svgIcon" */ '@/views/svgIcon.vue')
 const Drop = () => import(/* webpackChunkName: "drop" */ '@/views/drop.vue')
 const Android1px = () => import(/* webpackChunkName: "android1px" */ '@/views/android1px.vue')
-const TabBar = () => import(/* webpackChunkName: "tabBar" */ '@/views/tabBar.vue')
+const CompDemo = () => import(/* webpackChunkName: "compDemo" */ '@/views/compDemo.vue')
+const TableFixed = () => import(/* webpackChunkName: "tableFixed" */ '@/views/tableFixed.vue')
 
 const routes = [
   {
@@ -140,9 +141,14 @@ const routes = [
     component: Android1px
   },
   {
-    path: '/tabBar',
-    name: '测试一下',
-    component: TabBar
+    path: '/compDemo',
+    name: '组件demo实例测试',
+    component: CompDemo
+  },
+  {
+    path: '/tableFixed',
+    name: 'table固定列',
+    component: TableFixed
   },
   {
     path: '/other',
