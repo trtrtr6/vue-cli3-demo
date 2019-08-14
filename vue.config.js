@@ -10,14 +10,9 @@ module.exports = {
       errors: true
     }
   },
-  lintOnSave: true,
-  baseUrl: undefined,
-  outputDir: undefined,
+
   assetsDir: 'static',
-  runtimeCompiler: undefined,
   productionSourceMap: false,
-  parallel: undefined,
-  css: undefined,
 
   chainWebpack: config => {
     config.resolve.alias.set('@', resolve('src'))
