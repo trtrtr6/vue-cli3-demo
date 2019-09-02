@@ -16,7 +16,6 @@
   </div>
 </template>
 <style lang="less" scoped>
-@import "~@/assets/css/border-1px.less";
 .ad-box {
   margin-left: 30px;
   margin-top: 10px;

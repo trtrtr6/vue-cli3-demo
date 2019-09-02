@@ -118,7 +118,6 @@ export default {
 }
 </script>
 <style lang="less">
-@import "~@/assets/css/border-1px.less";
 @btn-active-bgc: rgba(0, 0, 0, 0.04);
 @btn-border-color: #dddddd;
 .x-dialog-main {

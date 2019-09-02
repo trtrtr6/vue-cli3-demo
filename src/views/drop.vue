@@ -1,6 +1,6 @@
 <template>
   <div class="drop-containner">
-    <drop-down :selections="list" v-model="selected" @change="dropChange" @open="dropOpen" />
+    <drop-down :selections="list" v-model="selected" @change="dropChange" @open="dropOpen"/>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
 }
 </script>
 <style lang="less">
-.drop-containner {
-  margin: 40px;
+.drop-containner{
+  margin:40px;
 }
 </style>

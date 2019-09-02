@@ -126,7 +126,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import "~@/assets/css/border-1px.less";
 .col-xs {
   padding-left: 0;
   padding-right: 0;

@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-expressions */
-!(function retina () {
+;(function retina () {
   // 安卓高分辨率屏幕处理
   if (navigator.userAgent.toUpperCase().indexOf('IPHONE OS') !== -1) return // IOS会缩放，不处理
   const classNames = []

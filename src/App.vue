@@ -31,9 +31,25 @@ body {
   width: 100%;
   height: 100%;
 }
+body {
+  font-family: "PingFang SC", Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-size: 14px;
+  font-weight: 400;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background-color: #fafafa;
+  color: rgba(0, 0, 0, 0.87);
+}
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.col-xs {
+  padding-left: 0;
+  padding-right: 0;
+}
 #app {
   width: 100vw;
   height: 100vh;
-  display: flex;
 }
 </style>
