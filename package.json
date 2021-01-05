@@ -9,7 +9,7 @@
     "dev": "npm run serve"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "better-scroll": "~1.12.6",
     "element-ui": "^2.5.2",
     "flexboxgrid": "^6.3.1",
